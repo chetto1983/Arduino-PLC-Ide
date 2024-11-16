@@ -45,13 +45,13 @@
 			<retainVars/>
 			<constantVars/>
 			<iecVarsDeclaration>
+				<group name="I_O_mappings_LEDOut">
+					<iecDeclaration active="FALSE"/>
+				</group>
 				<group name="Global_vars">
 					<iecDeclaration active="FALSE"/>
 				</group>
 				<group name="Ungrouped_vars">
-					<iecDeclaration active="FALSE"/>
-				</group>
-				<group name="I_O_mappings_LEDOut">
 					<iecDeclaration active="FALSE"/>
 				</group>
 			</iecVarsDeclaration>
@@ -7629,11 +7629,12 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="DataLogger" nextID="33">
+			<root name="ResetIFStop" nextID="41">
 				<GlobalVars name="Global_vars" id="2"/>
 				<Pou name="Main" id="7"/>
 				<GlobalVars name="I_O_mappings_LEDOut" id="9"/>
 				<Pou name="Inizilaizzazione" id="18"/>
+				<GlobalVars name="Ungrouped_vars" id="38"/>
 			</root>
 		</workspace>
 	</sources>
@@ -7749,8 +7750,7 @@ END_VAR
 
 int last_counter = 1000;
 unsigned long previousMillis = 0;
-const long interval = 2000;  // interval at which to blink 
-
+const long interval = 2000;  
 void setup()
 {
 /*

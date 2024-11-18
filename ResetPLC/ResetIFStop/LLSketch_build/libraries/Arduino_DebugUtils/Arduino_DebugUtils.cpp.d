@@ -1,4 +1,4 @@
-C:\Users\Davide\Desktop\DataLogger\LLSketch_build\libraries\Arduino_DebugUtils\Arduino_DebugUtils.cpp.o: \
+C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\ResetPLC\ResetIFStop\LLSketch_build\libraries\Arduino_DebugUtils\Arduino_DebugUtils.cpp.o: \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_DebugUtils_1.4.0_0354ee2edf6910cd\Arduino_DebugUtils\src\Arduino_DebugUtils.cpp \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_DebugUtils_1.4.0_0354ee2edf6910cd\Arduino_DebugUtils\src\Arduino_DebugUtils.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/Arduino.h \

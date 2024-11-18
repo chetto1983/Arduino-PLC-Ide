@@ -1,4 +1,4 @@
-C:\Users\Davide\Desktop\DataLogger\LLSketch_build\libraries\Arduino_Opta_Blueprint\OptaMsgCommon.cpp.o: \
+C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\ResetPLC\ResetIFStop\LLSketch_build\libraries\Arduino_Opta_Blueprint\OptaMsgCommon.cpp.o: \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\Arduino_Opta_Blueprint\src\OptaMsgCommon.cpp \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\Arduino_Opta_Blueprint\src\OptaMsgCommon.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/Arduino.h \

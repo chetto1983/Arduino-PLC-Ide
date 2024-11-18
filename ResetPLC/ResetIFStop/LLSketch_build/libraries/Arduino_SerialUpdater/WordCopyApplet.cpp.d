@@ -1,4 +1,4 @@
-C:\Users\Davide\Desktop\DataLogger\LLSketch_build\libraries\Arduino_SerialUpdater\WordCopyApplet.cpp.o: \
+C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\ResetPLC\ResetIFStop\LLSketch_build\libraries\Arduino_SerialUpdater\WordCopyApplet.cpp.o: \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\WordCopyApplet.cpp \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\WordCopyApplet.h \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\Applet.h \

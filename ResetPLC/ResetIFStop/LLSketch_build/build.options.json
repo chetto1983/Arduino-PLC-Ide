@@ -5,5 +5,5 @@
   "fqbn": "arduino:mbed_opta:opta",
   "hardwareFolders": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\packages",
   "otherLibrariesFolders": "C:\\Users\\Davide\\AppData\\Local\\T\\U\\libraries",
-  "sketchLocation": "C:\\Users\\Davide\\Desktop\\DataLogger\\LLSketch"
+  "sketchLocation": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\ResetPLC\\ResetIFStop\\LLSketch"
 }

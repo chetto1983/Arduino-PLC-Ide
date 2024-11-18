@@ -1,4 +1,4 @@
-C:\Users\Davide\Desktop\DataLogger\LLSketch_build\libraries\Arduino_SerialUpdater\BossaArduino.cpp.o: \
+C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\ResetPLC\ResetIFStop\LLSketch_build\libraries\Arduino_SerialUpdater\BossaArduino.cpp.o: \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\BossaArduino.cpp \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\BossaArduino.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/Arduino.h \

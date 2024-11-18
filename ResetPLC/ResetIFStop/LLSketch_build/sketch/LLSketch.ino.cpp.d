@@ -1,5 +1,5 @@
-C:\Users\Davide\Desktop\DataLogger\LLSketch_build\sketch\LLSketch.ino.cpp.o: \
- C:\Users\Davide\Desktop\DataLogger\LLSketch_build\sketch\LLSketch.ino.cpp \
+C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\ResetPLC\ResetIFStop\LLSketch_build\sketch\LLSketch.ino.cpp.o: \
+ C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\ResetPLC\ResetIFStop\LLSketch_build\sketch\LLSketch.ino.cpp \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/Arduino.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\variants\OPTA/pinmode_arduino.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\variants\OPTA/mbed_config.h \

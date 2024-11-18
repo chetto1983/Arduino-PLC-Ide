@@ -17,15 +17,14 @@ struct PLCSharedVarsOutput_t
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(-1963310513);
+AlPlc AxelPLC(1650424694);
 
 // shared variables can be accessed with PLCIn.varname and PLCOut.varname
 
 
 int last_counter = 1000;
 unsigned long previousMillis = 0;
-const long interval = 2000;  // interval at which to blink 
-
+const long interval = 2000;  
 void setup()
 {
 /*

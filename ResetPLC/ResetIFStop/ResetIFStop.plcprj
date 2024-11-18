@@ -58,7 +58,7 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="Main" version="1.0.0" creationDate="1731318020" lastModifiedDate="1731324521" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Main" version="1.0.0" creationDate="1731318020" lastModifiedDate="1731916616" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Clock1Hz" type="Clock_Gen"/>
@@ -104,10 +104,10 @@
 												<pin name="EN" neg="false" type="BOOL">
 													<contact name="Clock1Hz.Out" type="Positive" id="0"/>
 												</pin>
-												<pin name="0" neg="false" type="">
+												<pin name="0" neg="false" type="UNDEF">
 													<var name="Arduino_Count" id="3"/>
 												</pin>
-												<pin name="1" neg="false" type="">
+												<pin name="1" neg="false" type="UNDEF">
 													<const name="1" id="6"/>
 												</pin>
 											</inputs>
@@ -115,7 +115,7 @@
 												<pin name="ENO" neg="false" type="BOOL">
 													<outputLine/>
 												</pin>
-												<pin name="2" neg="false" type="">
+												<pin name="2" neg="false" type="UNDEF">
 													<var name="Arduino_Count" id="5"/>
 												</pin>
 											</outputs>
@@ -7629,7 +7629,7 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="ResetIFStop" nextID="41">
+			<root name="ResetIFStop" nextID="48">
 				<GlobalVars name="Global_vars" id="2"/>
 				<Pou name="Main" id="7"/>
 				<GlobalVars name="I_O_mappings_LEDOut" id="9"/>

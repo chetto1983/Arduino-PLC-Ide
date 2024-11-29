@@ -257,7 +257,7 @@ END_IF;
 ]]>
 					</sourceCode>
 				</functionBlock>
-				<functionBlock name="Curr_Date_Time" version="1.0.0" creationDate="1731598458" lastModifiedDate="1731663886" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<functionBlock name="Curr_Date_Time" version="1.0.0" creationDate="1731598458" lastModifiedDate="1732119450" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<inputVars>
 							<var name="UTC_TIMESTAMP" type="UDINT"/>
@@ -283,9 +283,7 @@ END_IF;
 					<interfaces/>
 					<methods/>
 					<sourceCode type="ST">
-						<![CDATA[
-
-// add time zone
+						<![CDATA[// add time zone
 
 Dummy_UDINT := TO_UDINT (UTC_TIMESTAMP +(Tz *3600));
 
@@ -12314,6 +12312,29 @@ END_PROGRAM
 
 ]]>
 			</src>
+			<src fullXml="false" name="Modbus_cfg.plc" order="0" hidden="false">
+				<![CDATA[(* Automatically generated code, do not edit! *)
+
+	(* MODBUS SLAVE CONFIGURATION *)
+
+	PROGRAM $$MbSBoot_0 WITH MbBoot;
+	PROGRAM $$MbSBoot_0
+	{ HIDDEN:ON }
+
+	VAR
+		openChannel_return : USINT;
+		slave_return : USINT;
+		broadMsg_return : BOOL;
+		slaveMsg_return : BOOL;
+	END_VAR
+
+	{ CODE:ST }
+openChannel_return := sysMbSRtu_OpenChn2( 1, 0, MbBaudrate#MbBaud_38400, MbMode#MbMode_8N1, 1, 2, FALSE, 0);
+
+	END_PROGRAM
+
+]]>
+			</src>
 			<src fullXml="false" name="IO.plc" order="0" hidden="false">
 				<![CDATA[(* Automatically generated, do not edit! *)
 
@@ -12353,6 +12374,8 @@ TimeSetOk AT %IB4.4 : BOOL;
 NtpSetOk AT %IB4.5 : BOOL;
 { G: "INPUTS" }
 NtpSetKo AT %IB4.6 : BOOL;
+{ G: "INPUTS" }
+UsbAvaiable AT %IB4.7 : BOOL;
 { G: "OUTPUTS" }
 TimeToSet AT %QB4.0 : UDINT;
 { G: "OUTPUTS" }
@@ -12365,7 +12388,7 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="DataLogger" nextID="1131">
+			<root name="DataLogger" nextID="1178">
 				<GlobalVars name="Global_vars" id="2"/>
 				<GlobalVars name="I_O_mappings_LEDOut" id="9"/>
 				<Pou name="Inizilaizzazione" id="18"/>
@@ -12486,6 +12509,7 @@ END_VAR
 							<sharedIO label="TimeSetOk" type="BOOL" size=""/>
 							<sharedIO label="NtpSetOk" type="BOOL" size=""/>
 							<sharedIO label="NtpSetKo" type="BOOL" size=""/>
+							<sharedIO label="UsbAvaiable" type="BOOL" size=""/>
 						</sharedInputs>
 						<sharedOutputs>
 							<sharedIO label="TimeToSet" type="UDINT" size=""/>
@@ -12493,7 +12517,7 @@ END_VAR
 							<sharedIO label="NTP_Set" type="BOOL" size=""/>
 						</sharedOutputs>
 					</config>
-					<RS485 protocol="" mode="0" baudRate="38400" serialMode="none,8,1" slaveAddress="1" COMnumber="2" rsmode="1" netId="0" maxSlaves="32" serCfg="1"/>
+					<RS485 protocol="" mode="2" baudRate="38400" serialMode="none,8,1" slaveAddress="1" COMnumber="2" rsmode="1" netId="0" maxSlaves="32" serCfg="1"/>
 					<CANopen id="0" protocol="" mode="0" nodeID="127" baudRate="250000" hbTime="0" syncCOBID="128" syncCycle="0" networkID="0" slaveNodeID="1" slaveDeviceType="301" slaveSyncCOBID="128" slaveSyncCycle="0" slaveManufacturerDeviceName="" slaveManufacturerHardwareVer="" slaveManufacturerSoftwareVer="" slaveGuardTime="200" slaveLifeTimeFactor="3" slaveConsumerHeartbeatTime="0" slaveProducerHeartbeatTime="0" slaveVendorID="0" slaveProductCode="0" slaveRevisionNumber="0" slaveSerialNumber="0" slaveCfgGranularity="8" slaveCfgCOBIDAutoAssignment="1" slaveCfgMaxTPDONum="8" slaveCfgMaxRPDONum="8"/>
 					<Ethernet protocol="" enableMaster="0" enableSlave="1" enableSlaveRtuGateway="0" rtuGatewayDefaultTimeout="100" slavePort="502"/>
 					<SketchContent>// shared variables can be accessed with PLCIn.varname and PLCOut.varname
@@ -12600,7 +12624,12 @@ void setup()
 	// If cable is not connected this will block the start of PLC with about 60s of timeout!
 	Ethernet.begin(ip, dns, gateway, subnet);
 	timeClient.begin();
-    
+      
+      
+    Arduino_UnifiedStorage::debuggingModeEnabled = true;
+    usbStorage = USBStorage();
+    usbStorage.onConnect(connectionCallback);
+    usbStorage.onDisconnect(disconnectionCallback);
    
 }
 
@@ -12639,6 +12668,8 @@ void loop()
       PLCIn.NtpSetOk = false;
       PLCIn.NtpSetKo = false;
   }
+  
+  PLCIn.UsbAvaiable = usbAvailable;
   
 }
 

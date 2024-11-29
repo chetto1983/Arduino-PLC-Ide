@@ -15,6 +15,7 @@ struct PLCSharedVarsInput_t
 	bool TimeSetOk;
 	bool NtpSetOk;
 	bool NtpSetKo;
+	bool UsbAvaiable;
 };
 PLCSharedVarsInput_t& PLCIn = (PLCSharedVarsInput_t&)m_PLCSharedVarsInputBuf;
 
@@ -27,7 +28,7 @@ struct PLCSharedVarsOutput_t
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(-501206345);
+AlPlc AxelPLC(-1173833909);
 
 // shared variables can be accessed with PLCIn.varname and PLCOut.varname
 #include <NTPClient.h>
@@ -55,21 +56,21 @@ bool usbIntialized = false;
 volatile bool usbAvailable = false;
 
 
-#line 56 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 57 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void connectionCallback();
-#line 69 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 70 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void disconnectionCallback();
-#line 76 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 77 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void writeToUSB();
-#line 103 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 104 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void performUpdate();
-#line 123 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 124 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void setup();
-#line 140 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 146 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void loop();
-#line 180 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 188 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void updateTime();
-#line 56 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
+#line 57 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\DataLogger\\DataLogger\\LLSketch\\LLSketch.ino"
 void connectionCallback() {
     usbAvailable = true;
     Arduino_UnifiedStorage::debugPrint("- USB device connected!");
@@ -148,7 +149,12 @@ void setup()
 	// If cable is not connected this will block the start of PLC with about 60s of timeout!
 	Ethernet.begin(ip, dns, gateway, subnet);
 	timeClient.begin();
-    
+      
+      
+    Arduino_UnifiedStorage::debuggingModeEnabled = true;
+    usbStorage = USBStorage();
+    usbStorage.onConnect(connectionCallback);
+    usbStorage.onDisconnect(disconnectionCallback);
    
 
 	AxelPLC.Run();
@@ -189,6 +195,8 @@ void loop()
       PLCIn.NtpSetOk = false;
       PLCIn.NtpSetKo = false;
   }
+  
+  PLCIn.UsbAvaiable = usbAvailable;
   
 }
 

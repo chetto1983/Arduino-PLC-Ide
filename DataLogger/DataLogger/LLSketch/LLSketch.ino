@@ -13,6 +13,7 @@ struct PLCSharedVarsInput_t
 	bool TimeSetOk;
 	bool NtpSetOk;
 	bool NtpSetKo;
+	bool UsbAvaiable;
 };
 PLCSharedVarsInput_t& PLCIn = (PLCSharedVarsInput_t&)m_PLCSharedVarsInputBuf;
 
@@ -25,7 +26,7 @@ struct PLCSharedVarsOutput_t
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(-501206345);
+AlPlc AxelPLC(-1173833909);
 
 // shared variables can be accessed with PLCIn.varname and PLCOut.varname
 #include <NTPClient.h>
@@ -131,7 +132,12 @@ void setup()
 	// If cable is not connected this will block the start of PLC with about 60s of timeout!
 	Ethernet.begin(ip, dns, gateway, subnet);
 	timeClient.begin();
-    
+      
+      
+    Arduino_UnifiedStorage::debuggingModeEnabled = true;
+    usbStorage = USBStorage();
+    usbStorage.onConnect(connectionCallback);
+    usbStorage.onDisconnect(disconnectionCallback);
    
 
 	AxelPLC.Run();
@@ -172,6 +178,8 @@ void loop()
       PLCIn.NtpSetOk = false;
       PLCIn.NtpSetKo = false;
   }
+  
+  PLCIn.UsbAvaiable = usbAvailable;
   
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plcProject caseSensitive="false" extendedIdNames="false" useCustomWorkspace="true" debugMode="false" extcheck="true" SFCControl="false" strictPointerCheck="true" verboseWarningMode="false" iecTypeConversionRules="false" PNContactsOnEachNetwork="false" LocalVarsFBAccess="false" strictEnumsCheck="true" copyWarningThreshold="200" version="2.11" useLD2="true" useXPLCFiles="false" useFBMethods="false" customSortOfProjectTree="false" autoDerefPointers="false">
 	<image>Mqtt.imgx</image>
-	<commSettings>Modbus:247,1000,M#COM:5,38400,N,8,1,H</commSettings>
+	<commSettings>Modbus:247,1000,M6#COM:9,38400,N,8,1,H</commSettings>
 	<sources>
 		<main>
 			<resources>
@@ -19,19 +19,28 @@
 			</resources>
 			<tasks>
 				<task name="Fast">
-					<program>main</program>
+					<program>Mqtt_Handeler</program>
 				</task>
 			</tasks>
 			<globalVars>
 				<group name="Global_vars" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="" version="1.0.0">
-					<var name="cnt" type="INT"/>
-					<var name="Temp1" type="REAL"/>
+					<var name="SendMqtt" type="BOOL"/>
+					<var name="PLC_Temp" type="REAL"/>
+					<var name="PLC_Hum" type="REAL"/>
+				</group>
+				<group name="I_O_mappings_LEDOut" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="" version="1.0.0">
+					<var name="LedGreen" type="BOOL">
+						<address type="Q" typeVar="X" index="1" subIndex="5"/>
+					</var>
 				</group>
 			</globalVars>
 			<retainVars/>
 			<constantVars/>
 			<iecVarsDeclaration>
 				<group name="Global_vars">
+					<iecDeclaration active="FALSE"/>
+				</group>
+				<group name="I_O_mappings_LEDOut">
 					<iecDeclaration active="FALSE"/>
 				</group>
 				<group name="Ungrouped_vars">
@@ -41,13 +50,99 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="main" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
-					<vars/>
+				<program name="Mqtt_Handeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1733151859" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+					<vars>
+						<localVars>
+							<var name="Clock_1Hz" type="Clock_Gen"/>
+						</localVars>
+					</vars>
 					<iecDeclaration active="FALSE"/>
-					<sourceCode type="ST">
-						<![CDATA[
-cnt := cnt + 1;
-]]>
+					<sourceCode type="LD2">
+						<LD2 version="1">
+							<network label="" id="1" nextID="5" comment="" disabled="false" disableCondition="">
+								<assignment fromTmpVar="">
+									<input>
+										<funcBlock name="Clock_Gen" id="2" instance="Clock_1Hz">
+											<inputs>
+												<pin name="EN" neg="false" type="BOOL"/>
+												<pin name="Tempo" neg="false" type="UDINT">
+													<const name="500" id="3"/>
+												</pin>
+											</inputs>
+											<outputs>
+												<pin name="ENO" neg="false" type="BOOL">
+													<outputLine/>
+												</pin>
+												<pin name="Out" neg="false" type="BOOL">
+													<var name="LedGreen" id="4"/>
+												</pin>
+											</outputs>
+										</funcBlock>
+									</input>
+									<outputs/>
+								</assignment>
+							</network>
+							<network label="" id="2" nextID="14" comment="" disabled="false" disableCondition="">
+								<assignment fromTmpVar="">
+									<input>
+										<operator name="MOVE" id="5">
+											<inputs>
+												<pin name="EN" neg="false" type="BOOL">
+													<operator name="MOVE" id="2">
+														<inputs>
+															<pin name="EN" neg="false" type="BOOL">
+																<and id="13">
+																	<contact name="SendMqtt" type="Normal" id="0"/>
+																	<contact name="Mqtt_Ok" type="Normal" id="12"/>
+																</and>
+															</pin>
+															<pin name="0" neg="false" type="">
+																<var name="PLC_Temp" id="3"/>
+															</pin>
+														</inputs>
+														<outputs>
+															<pin name="ENO" neg="false" type="BOOL">
+																<outputLine/>
+															</pin>
+															<pin name="1" neg="false" type="">
+																<var name="Temperatura" id="4"/>
+															</pin>
+														</outputs>
+													</operator>
+												</pin>
+												<pin name="0" neg="false" type="UNDEF">
+													<var name="PLC_Hum" id="7"/>
+												</pin>
+											</inputs>
+											<outputs>
+												<pin name="ENO" neg="false" type="BOOL">
+													<outputLine/>
+												</pin>
+												<pin name="1" neg="false" type="UNDEF">
+													<var name="Umidita" id="8"/>
+												</pin>
+											</outputs>
+										</operator>
+									</input>
+									<outputs>
+										<coil name="Send_Data" type="Normal" id="9"/>
+									</outputs>
+								</assignment>
+							</network>
+							<network label="" id="3" nextID="4" comment="" disabled="false" disableCondition="">
+								<assignment fromTmpVar="">
+									<input>
+										<or id="3">
+											<contact name="Send_Ok" type="Normal" id="0"/>
+											<contact name="Send_Ko" type="Normal" id="2"/>
+										</or>
+									</input>
+									<outputs>
+										<coil name="SendMqtt" type="Reset" id="1"/>
+									</outputs>
+								</assignment>
+							</network>
+						</LD2>
 					</sourceCode>
 				</program>
 			</programs>
@@ -5629,6 +5724,1834 @@ After function block execution, unless an error occurred, you can use a subset o
 				<subranges/>
 				<interfaces/>
 			</lib>
+			<lib version="1.0.0" name="C:\Users\Davide\Desktop\NordWest\Librerie\NordWest.plclib" fullXml="true" link="true">
+				<descr/>
+				<libWorkspace>
+					<folder name="NordWest">
+						<Pou name="Allarmi"/>
+						<Pou name="Calc_Temperatura"/>
+						<Pou name="Clock_Gen"/>
+						<Pou name="Copia_Dati"/>
+						<Pou name="Default_Value"/>
+						<Pou name="Main"/>
+						<Pou name="Output"/>
+						<Pou name="Ritenzione"/>
+						<Pou name="Sbrinamento"/>
+						<Pou name="ScalaLineare" genHidden="false"/>
+						<Pou name="Stati"/>
+						<Pou name="VelocitaVentola"/>
+					</folder>
+				</libWorkspace>
+				<globalVars/>
+				<retainVars/>
+				<constantVars/>
+				<iecVarsDeclaration/>
+				<functions/>
+				<functionBlocks>
+					<functionBlock name="Calc_Temperatura" version="1.0.0" creationDate="1728475731" lastModifiedDate="1728475909">
+						<vars>
+							<inputVars>
+								<var name="AnaInput" type="REAL"/>
+							</inputVars>
+							<outputVars>
+								<var name="T_Out" type="REAL"/>
+							</outputVars>
+							<localConsts>
+								<const name="a" type="REAL">
+									<initValue>0.0039083</initValue>
+								</const>
+								<const name="b" type="REAL">
+									<initValue>-0.0000005775</initValue>
+								</const>
+							</localConsts>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<interfaces/>
+						<methods/>
+						<sourceCode type="ST">
+							<![CDATA[T_Out := (-(1.0 / 100.0) * (50.0 * a - 10*sqrt(b * AnaInput + 25.0 * pow(a, 2.0) - 100.0 * b))) / b;
+]]>
+						</sourceCode>
+					</functionBlock>
+					<functionBlock name="Clock_Gen" version="1.0.0" creationDate="1728628073" lastModifiedDate="1728628391">
+						<vars>
+							<inputVars>
+								<var name="Tempo" type="UDINT"/>
+							</inputVars>
+							<outputVars>
+								<var name="Out" type="BOOL"/>
+							</outputVars>
+							<localVars>
+								<var name="Timer_1" type="TON"/>
+								<var name="Timer_2" type="TOF"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<interfaces/>
+						<methods/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="4" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="TON" id="2" instance="Timer_1">
+												<inputs>
+													<pin name="IN" neg="false" type="BOOL">
+														<contact name="Timer_2.Q" type="Closed" id="0"/>
+													</pin>
+													<pin name="PT" neg="false" type="UDINT">
+														<var name="Tempo" id="3"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="Q" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="ET" neg="false" type="UDINT"/>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="6" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="TOF" id="3" instance="Timer_2">
+												<inputs>
+													<pin name="IN" neg="false" type="BOOL">
+														<contact name="Timer_1.Q" type="Normal" id="0"/>
+													</pin>
+													<pin name="PT" neg="false" type="UDINT">
+														<var name="Tempo" id="4"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="Q" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="ET" neg="false" type="UDINT"/>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs>
+											<coil name="Out" type="Normal" id="5"/>
+										</outputs>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</functionBlock>
+					<functionBlock name="ScalaLineare" version="1.0.0" creationDate="1728474704" lastModifiedDate="1730456325">
+						<vars>
+							<inputVars>
+								<var name="in_val" type="REAL"/>
+								<var name="In_min" type="REAL"/>
+								<var name="In_max" type="REAL"/>
+								<var name="out_min" type="REAL"/>
+								<var name="out_max" type="REAL"/>
+							</inputVars>
+							<outputVars>
+								<var name="out" type="REAL"/>
+							</outputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<interfaces/>
+						<methods/>
+						<sourceCode type="ST">
+							<![CDATA[
+IF (in_val < in_min) THEN 
+
+	in_val := in_min;
+	
+END_IF;
+
+IF (in_val > in_max) THEN 
+
+	in_val := in_max;
+	
+END_IF;
+	
+
+IF (in_min <> 0.0 and in_max <>0.0) THEN 
+
+
+out := (in_val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+ELSE
+
+	out := out_min;
+	
+END_IF;
+
+
+IF (out < out_min) THEN
+	out := out_min;
+END_IF;
+
+if (out > out_max) then
+	out := out_max;
+END_IF;
+
+
+
+]]>
+						</sourceCode>
+					</functionBlock>
+				</functionBlocks>
+				<programs>
+					<program name="Allarmi" version="1.0.0" creationDate="1728394010" lastModifiedDate="1729238041">
+						<vars>
+							<localVars>
+								<var name="Dummy_DWord" type="DWORD"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="3" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="ibEmgKo" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bAllarmeEmg" type="Normal" id="1"/>
+											<coil name="Dummy_DWord.0" type="Normal" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="3" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="ibInverterOk" type="Closed" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bAllarmeInv" type="Normal" id="1"/>
+											<coil name="Dummy_DWord.1" type="Normal" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="3" nextID="3" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="ibscattoTermico" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bAllarmeTer" type="Normal" id="1"/>
+											<coil name="Dummy_DWord.2" type="Normal" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="4" nextID="3" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="ibEmgKo" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bAllarmeEmg" type="Normal" id="1"/>
+											<coil name="Dummy_DWord.3" type="Normal" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="5" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="GT" id="3">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="Dummy_DWord" id="4"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<const name="0" id="7"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="BOOL">
+														<var name="b_InAllarme" id="6"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+					<program name="Copia_Dati" version="1.0.0" creationDate="1728910131" lastModifiedDate="1729087427">
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// Ricette
+IF( bInviaRicetta) THEN
+wOreImpostate := wRcpOreCiclo  ;
+dTempVenFineCic := wRcpDeltaT ;
+rSetpoint := rRcpSetTIng ;
+rStartForbice := rRcpDeltaTVent;
+rForbice:= rRcpDeltaTBanda ;
+bInviaRicetta:= FALSE;
+END_IF;
+
+	
+//Copia Dati Modbus su ritenzione
+
+dContatoreSec_Rt:=dContatoreSec;
+dTimerSbrina_Rt:=dTimerSbrina;
+dTimerMaxSbrina_Rt:=dTimerMaxSbrina;
+rDelta_Rt:=rDelta;
+rForbice_Rt:=rForbice;
+rSetpoint_Rt:=rSetpoint;
+rStartForbice_Rt:=rStartForbice;
+rTempFineSbrin_Rt:=rTempFineSbrin;
+wMinutiAttuali_Rt:=wMinutiAttuali;
+wOreAttuali_Rt:=wOreAttuali;
+wOreImpostate_Rt:=wOreImpostate;
+dTempVenFineCic_Rt:=dTempVenFineCic;
+rPesoTarget_Rt:=rPesoTarget;
+wRcpOreCiclo_Rt:=wRcpOreCiclo;
+wRcpDeltaT_Rt:=wRcpDeltaT;
+rRcpSetTIng_Rt:=rRcpSetTIng;
+rRcpDeltaTVent_Rt:=rRcpDeltaTVent;
+rRcpDeltaTBanda_Rt:=rRcpDeltaTBanda;
+Trendmandata := rTempMandata;
+TendRitorno := rTempRitorno;
+TrendVentilazione:= rVelVentola;
+
+
+]]>
+						</sourceCode>
+					</program>
+					<program name="Default_Value" version="1.0.0" creationDate="1728462863" lastModifiedDate="1730457129">
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="53" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="bCaricaDefault" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<tmpVar id="20"/>
+										</outputs>
+									</assignment>
+									<assignment fromTmpVar="20">
+										<input>
+											<operator name="MOVE" id="13">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="MOVE" id="5">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL">
+																	<operator name="MOVE" id="9">
+																		<inputs>
+																			<pin name="EN" neg="false" type="BOOL"/>
+																			<pin name="0" neg="false" type="UNDEF">
+																				<const name="8" id="11"/>
+																			</pin>
+																		</inputs>
+																		<outputs>
+																			<pin name="ENO" neg="false" type="BOOL">
+																				<outputLine/>
+																			</pin>
+																			<pin name="1" neg="false" type="UNDEF">
+																				<var name="rForbice" id="12"/>
+																			</pin>
+																		</outputs>
+																	</operator>
+																</pin>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="35" id="8"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="rSetpoint" id="7"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="4" id="18"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="rStartForbice" id="19"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+									<assignment fromTmpVar="20">
+										<input>
+											<operator name="MOVE" id="29">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="MOVE" id="26">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL">
+																	<operator name="MOVE" id="23">
+																		<inputs>
+																			<pin name="EN" neg="false" type="BOOL"/>
+																			<pin name="0" neg="false" type="UNDEF">
+																				<const name="35" id="24"/>
+																			</pin>
+																		</inputs>
+																		<outputs>
+																			<pin name="ENO" neg="false" type="BOOL">
+																				<outputLine/>
+																			</pin>
+																			<pin name="1" neg="false" type="UNDEF">
+																				<var name="rTempFineSbrin" id="25"/>
+																			</pin>
+																		</outputs>
+																	</operator>
+																</pin>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="100" id="27"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="wOreImpostate" id="28"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="1000" id="33"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="dTimerSbrina" id="34"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+									<assignment fromTmpVar="20">
+										<input>
+											<operator name="MOVE" id="49">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="MOVE" id="37">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL"/>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="1000" id="44"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="dTimerMaxSbrina" id="45"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="50"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="dTempVenFineCic" id="51"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs>
+											<coil name="bCaricaDefault" type="Reset" id="52"/>
+										</outputs>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+					<program name="Main" version="1.0.0" creationDate="1728381641" lastModifiedDate="1730457541">
+						<vars>
+							<localVars>
+								<var name="bOreDn" type="BOOL"/>
+								<var name="TimerStopPeso" type="TON"/>
+								<var name="TimerVenFineCiclo" type="TON"/>
+								<var name="DummyBit" type="BOOL"/>
+								<var name="Clock_1Hz" type="Clock_Gen"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="5" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="Clock_Gen" id="2" instance="Clock_1Hz">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="Tempo" neg="false" type="UDINT">
+														<const name="500" id="3"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="Out" neg="false" type="BOOL">
+														<var name="Led_Run" id="4"/>
+													</pin>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="2" comment="Abilitazioni ciclo" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="IbInverterOk" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bAbilitazioni" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="3" nextID="7" comment="Start macchina" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="5">
+												<or id="3">
+													<contact name="bRqStartLoc" type="Normal" id="2"/>
+													<contact name="bRqStartRem" type="Normal" id="0"/>
+												</or>
+												<contact name="bAbilitazioni" type="Normal" id="4"/>
+												<contact name="brqVentilazione" type="Normal" id="6"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="bMarcia" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="4" nextID="2" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="brqVentilazione" type="Closed" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bRqStartLoc" type="Reset" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="5" nextID="9" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="8">
+												<operator name="GE" id="2">
+													<inputs>
+														<pin name="EN" neg="false" type="BOOL"/>
+														<pin name="0" neg="false" type="UNDEF">
+															<var name="wOreAttuali" id="3"/>
+														</pin>
+														<pin name="1" neg="false" type="UNDEF">
+															<var name="wOreImpostate" id="4"/>
+														</pin>
+													</inputs>
+													<outputs>
+														<pin name="ENO" neg="false" type="BOOL">
+															<outputLine/>
+														</pin>
+														<pin name="2" neg="false" type="BOOL">
+															<var name="DummyBit" id="6"/>
+														</pin>
+													</outputs>
+												</operator>
+												<contact name="DummyBit" type="Normal" id="7"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="bOreDn" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="6" nextID="7" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="4">
+												<contact name="bMarcia" type="Normal" id="2"/>
+												<or id="6">
+													<contact name="bOreDn" type="Normal" id="3"/>
+													<contact name="TimerStopPeso.Q" type="Normal" id="5"/>
+												</or>
+											</and>
+										</input>
+										<outputs>
+											<coil name="bFineCiclo" type="Set" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="7" nextID="3" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="bResetCiclo" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<coil name="bFineCiclo" type="Reset" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="8" nextID="10" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="TON" id="4" instance="TimerVenFineCiclo">
+												<inputs>
+													<pin name="IN" neg="false" type="BOOL">
+														<and id="9">
+															<contact name="bFineCiclo" type="Normal" id="2"/>
+															<contact name="bMarcia" type="Normal" id="8"/>
+														</and>
+													</pin>
+													<pin name="PT" neg="false" type="UDINT">
+														<var name="dTempVenFineCic" id="5"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="Q" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="ET" neg="false" type="UDINT"/>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="9" nextID="6" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="TimerVenFineCiclo.Q" type="Normal" id="2"/>
+										</input>
+										<outputs>
+											<coil name="bRqStartLoc" type="Reset" id="1"/>
+											<coil name="bRqVentilazione" type="Reset" id="4"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="10" nextID="15" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="ADD" id="4">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<and id="14">
+															<contact name="bMarcia" type="Normal" id="11"/>
+															<contact name="Clock_1Hz.Out" type="Positive" id="13"/>
+														</and>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="1" id="8"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="dContatoreSec" id="6"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="UNDEF">
+														<var name="dContatoreSec" id="7"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="11" nextID="32" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="25">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="ADD" id="16">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL">
+																	<and id="31">
+																		<operator name="GE" id="2">
+																			<inputs>
+																				<pin name="EN" neg="false" type="BOOL"/>
+																				<pin name="0" neg="false" type="UNDEF">
+																					<var name="dContatoreSec" id="3"/>
+																				</pin>
+																				<pin name="1" neg="false" type="UNDEF">
+																					<const name="60" id="6"/>
+																				</pin>
+																			</inputs>
+																			<outputs>
+																				<pin name="ENO" neg="false" type="BOOL">
+																					<outputLine/>
+																				</pin>
+																				<pin name="2" neg="false" type="BOOL">
+																					<var name="DummyBit" id="29"/>
+																				</pin>
+																			</outputs>
+																		</operator>
+																		<contact name="DummyBit" type="Normal" id="30"/>
+																	</and>
+																</pin>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="1" id="22"/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="wMinutiAttuali" id="23"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="2" neg="false" type="UNDEF">
+																	<var name="wMinutiAttuali" id="24"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="28"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="dContatoreSec" id="27"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="12" nextID="38" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="25">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="ADD" id="16">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL">
+																	<and id="36">
+																		<operator name="GE" id="2">
+																			<inputs>
+																				<pin name="EN" neg="false" type="BOOL"/>
+																				<pin name="0" neg="false" type="UNDEF">
+																					<var name="wMinutiAttuali" id="3"/>
+																				</pin>
+																				<pin name="1" neg="false" type="UNDEF">
+																					<const name="60" id="6"/>
+																				</pin>
+																			</inputs>
+																			<outputs>
+																				<pin name="ENO" neg="false" type="BOOL">
+																					<outputLine/>
+																				</pin>
+																				<pin name="2" neg="false" type="BOOL">
+																					<var name="DummyBit" id="37"/>
+																				</pin>
+																			</outputs>
+																		</operator>
+																		<contact name="DummyBit" type="Normal" id="35"/>
+																	</and>
+																</pin>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="1" id="22"/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="wOreAttuali" id="23"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="2" neg="false" type="UNDEF">
+																	<var name="wOreAttuali" id="24"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="33"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="wMinutiAttuali" id="34"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="13" nextID="39" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="35">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="MOVE" id="31">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL">
+																	<operator name="MOVE" id="2">
+																		<inputs>
+																			<pin name="EN" neg="false" type="BOOL">
+																				<contact name="bResetCiclo" type="Normal" id="0"/>
+																			</pin>
+																			<pin name="0" neg="false" type="UNDEF">
+																				<const name="0" id="10"/>
+																			</pin>
+																		</inputs>
+																		<outputs>
+																			<pin name="ENO" neg="false" type="BOOL">
+																				<outputLine/>
+																			</pin>
+																			<pin name="1" neg="false" type="UNDEF">
+																				<var name="wOreAttuali" id="11"/>
+																			</pin>
+																		</outputs>
+																	</operator>
+																</pin>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="0" id="33"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="wMinutiAttuali" id="34"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="37"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="dContatoreSec" id="38"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="14" nextID="5" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="brqVentilazione" type="Closed" id="3"/>
+										</input>
+										<outputs>
+											<coil name="bAttivaJoni" type="Reset" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+					<program name="Output" version="1.0.0" creationDate="1728392786" lastModifiedDate="1730197536">
+						<vars>
+							<localVars>
+								<var name="bTempMandataOk" type="BOOL"/>
+								<var name="bTempMandatMin" type="BOOL"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="4" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="3">
+												<contact name="bMarcia" type="Normal" id="0"/>
+												<contact name="bRqSbrinamento" type="Normal" id="2"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obEvSbrinamento" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="9" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="6">
+												<contact name="bRqVentilazione" type="Normal" id="5"/>
+												<contact name="bRqSbrinamento" type="Closed" id="7"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obRicircoloAria" type="Normal" id="1"/>
+											<coil name="LedOut3" type="Normal" id="8"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="3" nextID="7" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="3">
+												<contact name="bMarcia" type="Normal" id="0"/>
+												<or id="5">
+													<contact name="ibPresCondensato" type="Closed" id="2"/>
+													<contact name="obEvControllo" type="Normal" id="4"/>
+												</or>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obCondensatore" type="Normal" id="1"/>
+											<coil name="LedOut2" type="Normal" id="6"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="4" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="5">
+												<contact name="bMarcia" type="Normal" id="2"/>
+												<contact name="obEvControllo" type="Closed" id="4"/>
+												<contact name="bRqSbrinamento" type="Closed" id="6"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obEvCondensatore" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="5" nextID="4" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="3">
+												<contact name="bMarcia" type="Normal" id="0"/>
+												<contact name="bRqSbrinamento" type="Closed" id="2"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obEvFaseLiquida" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="6" nextID="16" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="SUB" id="11">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="rSetpoint" id="12"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<const name="0.4" id="15"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="UNDEF">
+														<var name="rSetpointDM" id="14"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="7" nextID="14" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="LE" id="10">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="GE" id="2">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL"/>
+																<pin name="0" neg="false" type="UNDEF">
+																	<var name="rTempMandata" id="3"/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="rSetpoint" id="4"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="2" neg="false" type="BOOL">
+																	<var name="bTempMandataOk" id="5"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="rTempMandata" id="11"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="rSetpointDM" id="12"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="BOOL">
+														<var name="bTempMandatMin" id="13"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="8" nextID="19" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="7">
+												<or id="17">
+													<contact name="bTempMandataOk" type="Normal" id="15"/>
+													<contact name="obEvControllo" type="Normal" id="16"/>
+												</or>
+												<contact name="bTempMandatMin" type="Closed" id="18"/>
+												<contact name="bMarcia" type="Normal" id="12"/>
+												<contact name="bRqSbrinamento" type="Closed" id="10"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obEvControllo" type="Normal" id="1"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="9" nextID="7" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="3">
+												<contact name="bMarcia" type="Normal" id="0"/>
+												<contact name="bPausaCiclo" type="Closed" id="2"/>
+												<contact name="bRqVentilazione" type="Normal" id="4"/>
+												<contact name="ibAltaPressOk" type="Normal" id="5"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obCompressore" type="Normal" id="1"/>
+											<coil name="LedOut1" type="Normal" id="6"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="10" nextID="6" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="3">
+												<contact name="bAttivaJoni" type="Normal" id="2"/>
+												<contact name="obRicircoloAria" type="Normal" id="4"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="obJonizzatore" type="Normal" id="1"/>
+											<coil name="LedOut4" type="Normal" id="5"/>
+										</outputs>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+					<program name="Ritenzione" version="1.0.0" creationDate="1728910802" lastModifiedDate="1730457692">
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[//inizializza i dati modbus ai volori  di ritenzione
+
+dContatoreSec := dContatoreSec_Rt ;
+dTimerSbrina := dTimerSbrina_Rt ;
+dTimerMaxSbrina := dTimerMaxSbrina_Rt ;
+rDelta := rDelta_Rt ;
+rForbice := rForbice_Rt ;
+rSetpoint := rSetpoint_Rt ;
+rStartForbice := rStartForbice_Rt ;
+rTempFineSbrin := rTempFineSbrin_Rt ;
+wMinutiAttuali := wMinutiAttuali_Rt ;
+wOreAttuali := wOreAttuali_Rt ;
+wOreImpostate := wOreImpostate_Rt ;
+dTempVenFineCic := dTempVenFineCic_Rt ;
+rPesoTarget := rPesoTarget_Rt ;
+wRcpOreCiclo := wRcpOreCiclo_Rt ;
+wRcpDeltaT := wRcpDeltaT_Rt ;
+rRcpSetTIng := rRcpSetTIng_Rt ;
+rRcpDeltaTVent := rRcpDeltaTVent_Rt ;
+rRcpDeltaTBanda := rRcpDeltaTBanda_Rt ;
+
+]]>
+						</sourceCode>
+					</program>
+					<program name="Sbrinamento" version="1.0.0" creationDate="1728391230" lastModifiedDate="1730458163">
+						<vars>
+							<localVars>
+								<var name="Azioni" type="DWORD"/>
+								<var name="Transizioni" type="DWORD"/>
+								<var name="AzioniZero" type="BOOL"/>
+								<var name="TimerSbrina" type="TON"/>
+								<var name="TimerMaxSbrina" type="TON"/>
+								<var name="b_TempGasOk" type="BOOL"/>
+								<var name="TempGas" type="Calc_Temperatura"/>
+								<var name="DummyBit" type="BOOL"/>
+								<var name="bMinutiDn" type="BOOL"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="20" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="17">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="Azioni" id="18"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="Transizioni" id="19"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="9" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="4">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<contact name="bResetCiclo" type="Normal" id="2"/>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="7"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="Azioni" id="6"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs>
+											<coil name="bResetCiclo" type="Reset" id="8"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="3" nextID="16" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="8">
+												<operator name="EQ" id="2">
+													<inputs>
+														<pin name="EN" neg="false" type="BOOL"/>
+														<pin name="0" neg="false" type="UNDEF">
+															<var name="Azioni" id="3"/>
+														</pin>
+														<pin name="1" neg="false" type="UNDEF">
+															<const name="0" id="15"/>
+														</pin>
+													</inputs>
+													<outputs>
+														<pin name="ENO" neg="false" type="BOOL">
+															<outputLine/>
+														</pin>
+														<pin name="2" neg="false" type="BOOL">
+															<var name="AzioniZero" id="5"/>
+														</pin>
+													</outputs>
+												</operator>
+												<contact name="AzioniZero" type="Normal" id="7"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="Azioni.0" type="Set" id="12"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="4" nextID="7" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="4">
+												<contact name="Transizioni.0" type="Normal" id="0"/>
+												<contact name="bMarcia" type="Normal" id="3"/>
+												<contact name="B_TempGasOk" type="Closed" id="6"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="Azioni.0" type="Reset" id="1"/>
+											<coil name="Azioni.1" type="Set" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="5" nextID="27" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="8">
+												<contact name="Transizioni.1" type="Normal" id="0"/>
+												<contact name="bMarcia" type="Normal" id="3"/>
+											</and>
+										</input>
+										<outputs>
+											<tmpVar id="9"/>
+										</outputs>
+									</assignment>
+									<assignment fromTmpVar="9">
+										<input>
+											<and id="4">
+												<operator name="GE" id="17">
+													<inputs>
+														<pin name="EN" neg="false" type="BOOL"/>
+														<pin name="0" neg="false" type="UNDEF">
+															<var name="T_Sbrina_Minuti_Rt" id="21"/>
+														</pin>
+														<pin name="1" neg="false" type="UNDEF">
+															<expression name="dTimerSbrina /1000" id="25"/>
+														</pin>
+													</inputs>
+													<outputs>
+														<pin name="ENO" neg="false" type="BOOL">
+															<outputLine/>
+														</pin>
+														<pin name="2" neg="false" type="BOOL">
+															<var name="DummyBit" id="23"/>
+														</pin>
+													</outputs>
+												</operator>
+												<contact name="DummyBit" type="Normal" id="26"/>
+												<contact name="B_TempGasOk" type="Closed" id="7"/>
+											</and>
+										</input>
+										<outputs>
+											<coil name="Azioni.1" type="Reset" id="1"/>
+											<coil name="Azioni.2" type="Set" id="2"/>
+										</outputs>
+									</assignment>
+									<assignment fromTmpVar="9">
+										<input>
+											<contact name="B_TempGasOk" type="Normal" id="10"/>
+										</input>
+										<outputs>
+											<coil name="Azioni.1" type="Reset" id="11"/>
+											<coil name="Azioni.0" type="Set" id="12"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="6" nextID="9" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="GE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="T_Max_Sbrina_Minuti_RT" id="6"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<expression name="dTimerMaxSbrina /1000" id="7"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="BOOL">
+														<var name="bMinutiDn" id="8"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="7" nextID="47" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<and id="38">
+												<contact name="Transizioni.2" type="Normal" id="0"/>
+												<contact name="bMarcia" type="Normal" id="3"/>
+												<or id="44">
+													<contact name="bMinutiDn" type="Normal" id="41"/>
+													<contact name="b_TempGasOk" type="Normal" id="45"/>
+												</or>
+											</and>
+										</input>
+										<outputs>
+											<coil name="Azioni.2" type="Reset" id="1"/>
+											<coil name="Azioni.0" type="Set" id="2"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="8" nextID="10" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="6">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<operator name="MOVE" id="2">
+															<inputs>
+																<pin name="EN" neg="false" type="BOOL">
+																	<contact name="azioni.0" type="Normal" id="0"/>
+																</pin>
+																<pin name="0" neg="false" type="UNDEF">
+																	<const name="0" id="5"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="ENO" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="1" neg="false" type="UNDEF">
+																	<var name="T_Sbrina_Minuti_Rt" id="4"/>
+																</pin>
+															</outputs>
+														</operator>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="8"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="T_Max_Sbrina_Minuti_RT" id="9"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="9" nextID="21" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="ADD" id="12">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<funcBlock name="TON" id="2" instance="TimerSbrina">
+															<inputs>
+																<pin name="IN" neg="false" type="BOOL">
+																	<and id="20">
+																		<contact name="azioni.1" type="Normal" id="0"/>
+																		<contact name="TimerSbrina.Q" type="Closed" id="19"/>
+																	</and>
+																</pin>
+																<pin name="PT" neg="false" type="UDINT">
+																	<const name="60000" id="11"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="Q" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="ET" neg="false" type="UDINT"/>
+															</outputs>
+														</funcBlock>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="1" id="16"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="T_Sbrina_Minuti_Rt" id="14"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="UNDEF">
+														<var name="T_Sbrina_Minuti_Rt" id="15"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="10" nextID="33" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<contact name="azioni.2" type="Normal" id="0"/>
+										</input>
+										<outputs>
+											<tmpVar id="6"/>
+										</outputs>
+									</assignment>
+									<assignment fromTmpVar="6">
+										<input>
+											<operator name="ADD" id="27">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<funcBlock name="TON" id="2" instance="TimerMaxSbrina">
+															<inputs>
+																<pin name="IN" neg="false" type="BOOL">
+																	<contact name="TimerMaxSbrina.Q" type="Closed" id="22"/>
+																</pin>
+																<pin name="PT" neg="false" type="UDINT">
+																	<const name="60000" id="21"/>
+																</pin>
+															</inputs>
+															<outputs>
+																<pin name="Q" neg="false" type="BOOL">
+																	<outputLine/>
+																</pin>
+																<pin name="ET" neg="false" type="UDINT"/>
+															</outputs>
+														</funcBlock>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="1" id="32"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="T_Max_Sbrina_Minuti_RT" id="30"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="UNDEF">
+														<var name="T_Max_Sbrina_Minuti_RT" id="31"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+									<assignment fromTmpVar="6">
+										<input>
+											<contact name="bMarcia" type="Normal" id="16"/>
+										</input>
+										<outputs>
+											<coil name="bRqSbrinamento" type="Normal" id="8"/>
+										</outputs>
+									</assignment>
+								</network>
+								<network label="" id="11" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="Calc_Temperatura" id="5" instance="TempGas">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="AnaInput" neg="false" type="REAL">
+														<var name="irTempGas" id="6"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="T_Out" neg="false" type="REAL">
+														<var name="rTempGas" id="7"/>
+													</pin>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="12" nextID="6" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="GE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="rTempGas" id="3"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="rTempFineSbrin" id="4"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="BOOL">
+														<var name="B_TempGasOk" id="5"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+					<program name="Stati" version="1.0.0" creationDate="1728458593" lastModifiedDate="1728458829">
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="6" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<contact name="bMarcia" type="Closed" id="0"/>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="0" id="5"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="wStatus" id="4"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<and id="7">
+															<contact name="bMarcia" type="Normal" id="0"/>
+															<contact name="bAbilitazioni" type="Normal" id="6"/>
+														</and>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="1" id="5"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="wStatus" id="4"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="3" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<and id="7">
+															<contact name="bMarcia" type="Normal" id="0"/>
+															<contact name="bRqSbrinamento" type="Normal" id="6"/>
+														</and>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="2" id="5"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="wStatus" id="4"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="4" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<contact name="bFineCiclo" type="Normal" id="0"/>
+													</pin>
+													<pin name="0" neg="false" type="">
+														<const name="3" id="5"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="">
+														<var name="wStatus" id="4"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="5" nextID="8" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="MOVE" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL">
+														<contact name="bAbilitazioni" type="Closed" id="6"/>
+													</pin>
+													<pin name="0" neg="false" type="UNDEF">
+														<const name="4" id="5"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="wStatus" id="4"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+					<program name="VelocitaVentola" version="1.0.0" creationDate="1728457967" lastModifiedDate="1730237309">
+						<vars>
+							<localVars>
+								<var name="DummyBit" type="BOOL"/>
+								<var name="Calc_Vel" type="ScalaLineare"/>
+								<var name="TempMandata" type="Calc_Temperatura"/>
+								<var name="TempRitorno" type="Calc_Temperatura"/>
+								<var name="Test" type="BOOL"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="LD2">
+							<LD2 version="1">
+								<network label="" id="1" nextID="26" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="Calc_Temperatura" id="23" instance="TempMandata">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="AnaInput" neg="false" type="REAL">
+														<var name="irTempMandata" id="24"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="T_Out" neg="false" type="BOOL">
+														<var name="rTempMandata" id="25"/>
+													</pin>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="2" nextID="11" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="Calc_Temperatura" id="8" instance="TempRitorno">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="AnaInput" neg="false" type="REAL">
+														<var name="irTempRitorno" id="9"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="T_Out" neg="false" type="BOOL">
+														<var name="rTempRitorno" id="10"/>
+													</pin>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="3" nextID="6" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<operator name="SUB" id="2">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="0" neg="false" type="UNDEF">
+														<var name="rTempMandata" id="3"/>
+													</pin>
+													<pin name="1" neg="false" type="UNDEF">
+														<var name="rTempRitorno" id="4"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="2" neg="false" type="UNDEF">
+														<var name="rDelta" id="5"/>
+													</pin>
+												</outputs>
+											</operator>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="4" nextID="14" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<funcBlock name="ScalaLineare" id="2" instance="Calc_Vel">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="in_val" neg="false" type="REAL">
+														<var name="rDelta" id="3"/>
+													</pin>
+													<pin name="In_min" neg="false" type="REAL">
+														<var name="rStartForbice" id="4"/>
+													</pin>
+													<pin name="In_max" neg="false" type="REAL">
+														<expression name="rStartForbice + rForbice" id="10"/>
+													</pin>
+													<pin name="out_min" neg="false" type="REAL">
+														<const name="0.0" id="6"/>
+													</pin>
+													<pin name="out_Max" neg="false" type="REAL">
+														<const name="10.0" id="7"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="out" neg="false" type="REAL">
+														<var name="rCostVel" id="8"/>
+													</pin>
+												</outputs>
+											</funcBlock>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="5" nextID="12" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<function name="TO_UINT" id="5">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="#0" neg="false" type="UNDEF">
+														<expression name="rCostVel * 8191.0 / 11.0" id="11"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="#O" neg="false" type="UINT">
+														<var name="owVentola" id="7"/>
+													</pin>
+												</outputs>
+											</function>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+								<network label="" id="6" nextID="11" comment="" disabled="false" disableCondition="">
+									<assignment fromTmpVar="">
+										<input>
+											<function name="TO_REAL" id="7">
+												<inputs>
+													<pin name="EN" neg="false" type="BOOL"/>
+													<pin name="#0" neg="false" type="UNDEF">
+														<expression name="rCostVel *10" id="10"/>
+													</pin>
+												</inputs>
+												<outputs>
+													<pin name="ENO" neg="false" type="BOOL">
+														<outputLine/>
+													</pin>
+													<pin name="#O" neg="false" type="REAL">
+														<var name="rVelVentola" id="9"/>
+													</pin>
+												</outputs>
+											</function>
+										</input>
+										<outputs/>
+									</assignment>
+								</network>
+							</LD2>
+						</sourceCode>
+					</program>
+				</programs>
+				<macros/>
+				<structs/>
+				<typedefs/>
+				<enums/>
+				<subranges/>
+				<interfaces/>
+			</lib>
 		</libraries>
 		<aux>
 			<src fullXml="false" name="Global shared.plc" order="0" hidden="false">
@@ -5732,11 +7655,31 @@ END_PROGRAM
 
 ]]>
 			</src>
+			<src fullXml="false" name="SharedVars.plc" order="0" hidden="false">
+				<![CDATA[VAR_GLOBAL
+{ G: "INPUTS" }
+Mqtt_Ok AT %IB4.0 : BOOL;
+{ G: "INPUTS" }
+Send_Ok AT %IB4.1 : BOOL;
+{ G: "INPUTS" }
+Send_Ko AT %IB4.2 : BOOL;
+{ G: "OUTPUTS" }
+Send_Data AT %QB4.0 : BOOL;
+{ G: "OUTPUTS" }
+Temperatura AT %QB4.4 : REAL;
+{ G: "OUTPUTS" }
+Umidita AT %QB4.8 : REAL;
+END_VAR
+
+]]>
+			</src>
 		</aux>
 		<workspace>
-			<root name="Mqtt" nextID="11">
-				<Pou name="main" id="1"/>
+			<root name="Mqtt" nextID="42">
 				<GlobalVars name="Global_vars" id="2"/>
+				<GlobalVars name="Ungrouped_vars" id="13"/>
+				<Pou name="Mqtt_Handeler" id="16"/>
+				<GlobalVars name="I_O_mappings_LEDOut" id="18"/>
 			</root>
 		</workspace>
 	</sources>
@@ -5827,7 +7770,7 @@ END_PROGRAM
 								<label/>
 							</ioMapping>
 							<ioMapping id="5">
-								<label/>
+								<label>LedGreen</label>
 							</ioMapping>
 							<ioMapping id="6">
 								<label/>
@@ -5838,31 +7781,162 @@ END_PROGRAM
 								<label/>
 							</ioMapping>
 						</ioMappings_ButInp>
-						<sharedInputs/>
-						<sharedOutputs/>
+						<sharedInputs>
+							<sharedIO label="Mqtt_Ok" type="BOOL" size=""/>
+							<sharedIO label="Send_Ok" type="BOOL" size=""/>
+							<sharedIO label="Send_Ko" type="BOOL" size=""/>
+						</sharedInputs>
+						<sharedOutputs>
+							<sharedIO label="Send_Data" type="BOOL" size=""/>
+							<sharedIO label="Temperatura" type="REAL" size=""/>
+							<sharedIO label="Umidita" type="REAL" size=""/>
+						</sharedOutputs>
 					</config>
 					<RS485 protocol="ModbusRTU_master" mode="1" baudRate="38400" serialMode="none,8,1" slaveAddress="1" COMnumber="2" rsmode="1" netId="0" maxSlaves="32" serCfg="1"/>
 					<CANopen id="0" protocol="" mode="0" nodeID="127" baudRate="250000" hbTime="0" syncCOBID="128" syncCycle="0" networkID="0" slaveNodeID="1" slaveDeviceType="301" slaveSyncCOBID="128" slaveSyncCycle="0" slaveManufacturerDeviceName="" slaveManufacturerHardwareVer="" slaveManufacturerSoftwareVer="" slaveGuardTime="200" slaveLifeTimeFactor="3" slaveConsumerHeartbeatTime="0" slaveProducerHeartbeatTime="0" slaveVendorID="0" slaveProductCode="0" slaveRevisionNumber="0" slaveSerialNumber="0" slaveCfgGranularity="8" slaveCfgCOBIDAutoAssignment="1" slaveCfgMaxTPDONum="8" slaveCfgMaxRPDONum="8"/>
 					<Ethernet protocol="" enableMaster="0" enableSlave="1" enableSlaveRtuGateway="0" rtuGatewayDefaultTimeout="100" slavePort="502"/>
-					<SketchContent>// shared variables can be accessed with PLCIn.varname and PLCOut.varname
+					<SketchContent>#include &lt;PubSubClient.h&gt;
+#include &lt;ArduinoJson.h&gt;
+
+
+
+
+IPAddress ip_Mqtt (192, 168, 1, 110);
+#define topic "Stazione1"
+String clientName = "OptaStazione1";
+EthernetClient ethClient;
+PubSubClient client(ethClient);
+JsonDocument doc;
+long lastReconnectAttempt = 0;
+unsigned int fsm = 0;
+unsigned int total_retry = 0;
+
+boolean reconnect()
+{
+  // Ensure clean disconnect
+  client.disconnect();
+  delay(100);
+
+  Serial.println("Attempting MQTT connection...");
+
+  // Attempt to connect to the MQTT broker
+  clientName += String(random(0xffff), HEX);
+  client.connect(clientName.c_str());
+  if (client.connect(clientName.c_str()))
+  {
+    Serial.println("connected");
+    return true;
+  }
+  else
+  {
+    Serial.print("failed, rc=");
+    Serial.println(String(client.state()));
+    Serial.println(" try again in 5 seconds");
+    return false;
+  }
+}
+
 
 void setup()
 {
 
 	// Configure static IP address
-	IPAddress ip(192, 168, 1, 1);
+	IPAddress ip(192, 168, 1, 20);
 	IPAddress dns(8, 8, 8, 8);
-	IPAddress gateway(192, 168, 1, 0);
+	IPAddress gateway(192, 168, 1, 1);
 	IPAddress subnet(255, 255, 255, 0);
-	// If cable is not connected this will block the start of PLC with about 60s of timeout!
 	Ethernet.begin(ip, dns, gateway, subnet);
+	// If cable is not connected this will block the start of PLC with about 60s of timeout!
+	client.setServer(ip_Mqtt, 1883);
+
+
+	
+
 }
 
 void loop()
 {
+    if (!client.connected()) 
+    {
+        PLCIn.Mqtt_Ok = false;
+        PLCIn.Send_Ok = false;
+        PLCIn.Mqtt_Ok = false;
+        long now = millis();
+        if (now - lastReconnectAttempt &gt; 5000) 
+        {
+            lastReconnectAttempt = now;
+            // Attempt to reconnect
+            if (reconnect())
+            {
+                lastReconnectAttempt = 0;
+                PLCIn.Mqtt_Ok = true;
+            }
+            total_retry++;
+            
+            if (total_retry&gt; 5)
+            {
+                NVIC_SystemReset();
+            }
 
+        }
+        
+    }
+    
+    send_mqtt();
+    
+    client.loop();
+    
+
+}
+
+
+void send_mqtt()
+{
+    switch (fsm)
+    {
+        case 0:
+        // passo iniziale
+        if (PLCOut.Send_Data &amp;&amp; PLCIn.Mqtt_Ok)
+        {
+            fsm = 1;
+        }
+        break;
+        
+        case 1:
+        // pubblico dati
+        char buffer[256];
+        doc["Temperatura"] = PLCOut.Temperatura;
+        doc["Umidita"] = PLCOut.Umidita;
+        
+        serializeJson(doc, buffer);
+
+        if (client.publish(topic, buffer))
+        {
+            PLCIn.Send_Ok = true;
+            fsm = 2;
+        }
+        else
+        {
+            PLCIn.Send_Ko = true;
+            fsm = 2;
+        }
+        
+        break;
+        
+        case 2:
+        // attendo sincronizzazione con plc task
+        if (! PLCOut.Send_Data)
+        {
+            PLCIn.Send_Ok = false;
+            PLCIn.Send_Ko = false;
+            fsm = 0; 
+        }
+        
+        break;
+    }
 }</SketchContent>
 					<SketchLibraries>
+						<SketchLibrary name="ArduinoJson" ver="7.2.0"/>
 						<SketchLibrary name="PubSubClient" ver="2.8.0"/>
 					</SketchLibraries>
 					<IOExpansions/>

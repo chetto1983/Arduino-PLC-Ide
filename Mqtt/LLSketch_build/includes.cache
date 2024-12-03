@@ -41,6 +41,16 @@
   },
   {
     "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Include": "PubSubClient.h",
+    "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\PubSubClient_2.8.0_61c8a47debd6e04e\\PubSubClient\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Include": "ArduinoJson.h",
+    "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\ArduinoJson_7.2.0_fecde13dd02bc891\\ArduinoJson\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "",
     "Includepath": null
   },
@@ -166,6 +176,11 @@
   },
   {
     "Sourcefile": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\\libraries\\Wire\\Wire.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\PubSubClient_2.8.0_61c8a47debd6e04e\\PubSubClient\\src\\PubSubClient.cpp",
     "Include": "",
     "Includepath": null
   },

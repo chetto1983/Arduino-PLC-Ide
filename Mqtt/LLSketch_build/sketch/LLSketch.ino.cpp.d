@@ -433,4 +433,11 @@ C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\Mqtt\LLSketch_build\sketch\LLSk
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/Print.h \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\Arduino_Opta_Blueprint\src/OptaDigitalProtocol.h \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\Arduino_Opta_Blueprint\src/DigitalMechExpansion.h \
- C:\Users\Davide\AppData\Local\T\A\internal\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\Arduino_Opta_Blueprint\src/DigitalStSolidExpansion.h
+ C:\Users\Davide\AppData\Local\T\A\internal\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\Arduino_Opta_Blueprint\src/DigitalStSolidExpansion.h \
+ C:\Users\Davide\AppData\Local\T\A\internal\PubSubClient_2.8.0_61c8a47debd6e04e\PubSubClient\src/PubSubClient.h \
+ C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/IPAddress.h \
+ C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/Client.h \
+ C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/Stream.h \
+ C:\Users\Davide\AppData\Local\T\A\internal\ArduinoJson_7.2.0_fecde13dd02bc891\ArduinoJson\src/ArduinoJson.h \
+ C:\Users\Davide\AppData\Local\T\A\internal\ArduinoJson_7.2.0_fecde13dd02bc891\ArduinoJson\src/ArduinoJson.hpp \
+ C:\Users\Davide\AppData\Local\T\A\internal\ArduinoJson_7.2.0_fecde13dd02bc891\ArduinoJson\src/ArduinoJson/Configuration.hpp

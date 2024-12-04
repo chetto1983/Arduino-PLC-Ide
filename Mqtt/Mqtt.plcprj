@@ -19,7 +19,7 @@
 			</resources>
 			<tasks>
 				<task name="Fast">
-					<program>Mqtt_Handeler</program>
+					<program>MqttHandeler</program>
 				</task>
 			</tasks>
 			<globalVars>
@@ -50,10 +50,12 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="Mqtt_Handeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1733151859" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="MqttHandeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1733300942" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Clock_1Hz" type="Clock_Gen"/>
+							<var name="Fail_Counter" type="UDINT"/>
+							<var name="Send_Counter" type="UDINT"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -96,7 +98,7 @@
 																	<contact name="Mqtt_Ok" type="Normal" id="12"/>
 																</and>
 															</pin>
-															<pin name="0" neg="false" type="">
+															<pin name="0" neg="false" type="UNDEF">
 																<var name="PLC_Temp" id="3"/>
 															</pin>
 														</inputs>
@@ -104,7 +106,7 @@
 															<pin name="ENO" neg="false" type="BOOL">
 																<outputLine/>
 															</pin>
-															<pin name="1" neg="false" type="">
+															<pin name="1" neg="false" type="UNDEF">
 																<var name="Temperatura" id="4"/>
 															</pin>
 														</outputs>
@@ -129,13 +131,73 @@
 									</outputs>
 								</assignment>
 							</network>
-							<network label="" id="3" nextID="4" comment="" disabled="false" disableCondition="">
+							<network label="" id="3" nextID="12" comment="" disabled="false" disableCondition="">
 								<assignment fromTmpVar="">
 									<input>
-										<or id="3">
-											<contact name="Send_Ok" type="Normal" id="0"/>
-											<contact name="Send_Ko" type="Normal" id="2"/>
-										</or>
+										<operator name="ADD" id="4">
+											<inputs>
+												<pin name="EN" neg="false" type="BOOL">
+													<contact name="Send_Ko" type="Positive" id="2"/>
+												</pin>
+												<pin name="0" neg="false" type="UNDEF">
+													<const name="1" id="8"/>
+												</pin>
+												<pin name="1" neg="false" type="UNDEF">
+													<var name="Fail_Counter" id="6"/>
+												</pin>
+											</inputs>
+											<outputs>
+												<pin name="ENO" neg="false" type="BOOL">
+													<outputLine/>
+												</pin>
+												<pin name="2" neg="false" type="UNDEF">
+													<var name="Fail_Counter" id="7"/>
+												</pin>
+											</outputs>
+										</operator>
+									</input>
+									<outputs/>
+								</assignment>
+							</network>
+							<network label="" id="4" nextID="12" comment="" disabled="false" disableCondition="">
+								<assignment fromTmpVar="">
+									<input>
+										<operator name="ADD" id="4">
+											<inputs>
+												<pin name="EN" neg="false" type="BOOL">
+													<contact name="Send_Ok" type="Positive" id="2"/>
+												</pin>
+												<pin name="0" neg="false" type="UNDEF">
+													<const name="1" id="8"/>
+												</pin>
+												<pin name="1" neg="false" type="UNDEF">
+													<var name="Send_Counter" id="6"/>
+												</pin>
+											</inputs>
+											<outputs>
+												<pin name="ENO" neg="false" type="BOOL">
+													<outputLine/>
+												</pin>
+												<pin name="2" neg="false" type="UNDEF">
+													<var name="Send_Counter" id="7"/>
+												</pin>
+											</outputs>
+										</operator>
+									</input>
+									<outputs/>
+								</assignment>
+							</network>
+							<network label="" id="5" nextID="7" comment="" disabled="false" disableCondition="">
+								<assignment fromTmpVar="">
+									<input>
+										<and id="6">
+											<or id="3">
+												<contact name="Send_Ok" type="Normal" id="0"/>
+												<contact name="Send_Ko" type="Normal" id="2"/>
+												<contact name="Mqtt_Ok" type="Closed" id="4"/>
+											</or>
+											<contact name="SendMqtt" type="Normal" id="5"/>
+										</and>
 									</input>
 									<outputs>
 										<coil name="SendMqtt" type="Reset" id="1"/>
@@ -7675,10 +7737,10 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="Mqtt" nextID="42">
+			<root name="Mqtt" nextID="58">
 				<GlobalVars name="Global_vars" id="2"/>
 				<GlobalVars name="Ungrouped_vars" id="13"/>
-				<Pou name="Mqtt_Handeler" id="16"/>
+				<Pou name="MqttHandeler" id="16"/>
 				<GlobalVars name="I_O_mappings_LEDOut" id="18"/>
 			</root>
 		</workspace>
@@ -7795,34 +7857,33 @@ END_VAR
 					<RS485 protocol="ModbusRTU_master" mode="1" baudRate="38400" serialMode="none,8,1" slaveAddress="1" COMnumber="2" rsmode="1" netId="0" maxSlaves="32" serCfg="1"/>
 					<CANopen id="0" protocol="" mode="0" nodeID="127" baudRate="250000" hbTime="0" syncCOBID="128" syncCycle="0" networkID="0" slaveNodeID="1" slaveDeviceType="301" slaveSyncCOBID="128" slaveSyncCycle="0" slaveManufacturerDeviceName="" slaveManufacturerHardwareVer="" slaveManufacturerSoftwareVer="" slaveGuardTime="200" slaveLifeTimeFactor="3" slaveConsumerHeartbeatTime="0" slaveProducerHeartbeatTime="0" slaveVendorID="0" slaveProductCode="0" slaveRevisionNumber="0" slaveSerialNumber="0" slaveCfgGranularity="8" slaveCfgCOBIDAutoAssignment="1" slaveCfgMaxTPDONum="8" slaveCfgMaxRPDONum="8"/>
 					<Ethernet protocol="" enableMaster="0" enableSlave="1" enableSlaveRtuGateway="0" rtuGatewayDefaultTimeout="100" slavePort="502"/>
-					<SketchContent>#include &lt;PubSubClient.h&gt;
-#include &lt;ArduinoJson.h&gt;
-
+					<SketchContent>#include &lt;ArduinoJson.h&gt;
+#include &lt;ArduinoMqttClient.h&gt;
 
 
 
 IPAddress ip_Mqtt (192, 168, 1, 110);
 #define topic "Stazione1"
-String clientName = "OptaStazione1";
 EthernetClient ethClient;
-PubSubClient client(ethClient);
+MqttClient client(ethClient);
+
 JsonDocument doc;
 long lastReconnectAttempt = 0;
 unsigned int fsm = 0;
 unsigned int total_retry = 0;
+bool conncected = false;
 
 boolean reconnect()
 {
   // Ensure clean disconnect
-  client.disconnect();
-  delay(100);
 
   Serial.println("Attempting MQTT connection...");
 
   // Attempt to connect to the MQTT broker
-  clientName += String(random(0xffff), HEX);
-  client.connect(clientName.c_str());
-  if (client.connect(clientName.c_str()))
+  
+  // boolean connect(const char* id, const char* willTopic, uint8_t willQos, boolean willRetain, const char* willMessage);
+  client.connect(ip_Mqtt, 1883);
+  if (client.connect(ip_Mqtt, 1883))
   {
     Serial.println("connected");
     return true;
@@ -7830,7 +7891,7 @@ boolean reconnect()
   else
   {
     Serial.print("failed, rc=");
-    Serial.println(String(client.state()));
+    Serial.println(String(client.connectError()));
     Serial.println(" try again in 5 seconds");
     return false;
   }
@@ -7847,7 +7908,6 @@ void setup()
 	IPAddress subnet(255, 255, 255, 0);
 	Ethernet.begin(ip, dns, gateway, subnet);
 	// If cable is not connected this will block the start of PLC with about 60s of timeout!
-	client.setServer(ip_Mqtt, 1883);
 
 
 	
@@ -7860,7 +7920,10 @@ void loop()
     {
         PLCIn.Mqtt_Ok = false;
         PLCIn.Send_Ok = false;
-        PLCIn.Mqtt_Ok = false;
+        PLCIn.Send_Ko = false;
+        conncected = false;
+        fsm = 0;
+        
         long now = millis();
         if (now - lastReconnectAttempt &gt; 5000) 
         {
@@ -7870,6 +7933,7 @@ void loop()
             {
                 lastReconnectAttempt = 0;
                 PLCIn.Mqtt_Ok = true;
+                conncected= true;
             }
             total_retry++;
             
@@ -7884,7 +7948,7 @@ void loop()
     
     send_mqtt();
     
-    client.loop();
+    client.poll();
     
 
 }
@@ -7896,7 +7960,7 @@ void send_mqtt()
     {
         case 0:
         // passo iniziale
-        if (PLCOut.Send_Data &amp;&amp; PLCIn.Mqtt_Ok)
+        if (PLCOut.Send_Data &amp;&amp; conncected)
         {
             fsm = 1;
         }
@@ -7907,20 +7971,13 @@ void send_mqtt()
         char buffer[256];
         doc["Temperatura"] = PLCOut.Temperatura;
         doc["Umidita"] = PLCOut.Umidita;
-        
         serializeJson(doc, buffer);
-
-        if (client.publish(topic, buffer))
-        {
-            PLCIn.Send_Ok = true;
-            fsm = 2;
-        }
-        else
-        {
-            PLCIn.Send_Ko = true;
-            fsm = 2;
-        }
         
+        client.beginMessage(topic);
+        client.print(buffer);
+        client.endMessage();
+        PLCIn.Send_Ok = true;
+        fsm = 2;
         break;
         
         case 2:
@@ -7931,13 +7988,12 @@ void send_mqtt()
             PLCIn.Send_Ko = false;
             fsm = 0; 
         }
-        
         break;
     }
 }</SketchContent>
 					<SketchLibraries>
 						<SketchLibrary name="ArduinoJson" ver="7.2.0"/>
-						<SketchLibrary name="PubSubClient" ver="2.8.0"/>
+						<SketchLibrary name="ArduinoMqttClient" ver="0.1.8"/>
 					</SketchLibraries>
 					<IOExpansions/>
 				</ArduinoOpta_1p2>

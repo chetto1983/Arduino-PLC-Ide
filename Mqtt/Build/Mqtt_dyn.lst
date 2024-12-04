@@ -53,40 +53,40 @@
 0000	00 00 04 00 00 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000358
-000C	58 03 00 00 
+*		Code offset: 0x0000042C
+000C	2C 04 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #8 OF DATA BLOCK %Q4
 0010	00 00 04 00 08 00 00 00 02 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000036C
-001C	6C 03 00 00 
+*		Code offset: 0x00000440
+001C	40 04 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #2 OF DATA BLOCK %I4
 0020	00 00 04 00 02 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000360
-002C	60 03 00 00 
+*		Code offset: 0x00000434
+002C	34 04 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %I4
 0030	00 00 04 00 01 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000035C
-003C	5C 03 00 00 
+*		Code offset: 0x00000430
+003C	30 04 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #5 OF DATA BLOCK %Q1
 0040	00 00 01 00 05 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000354
-004C	54 03 00 00 
+*		Code offset: 0x00000428
+004C	28 04 00 00 
 
 *
 *	2 REFERENCE(S) TO 32-BIT VAR AT BYTE #0 OF DATA BLOCK %M60000
@@ -105,16 +105,16 @@
 0064	00 00 04 00 00 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000364
-0070	64 03 00 00 
+*		Code offset: 0x00000438
+0070	38 04 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #4 OF DATA BLOCK %Q4
 0074	00 00 04 00 04 00 00 00 02 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000368
-0080	68 03 00 00 
+*		Code offset: 0x0000043C
+0080	3C 04 00 00 
 
 
 ***************************************************
@@ -122,16 +122,16 @@
 ***************************************************
 
 NAME: sysCfgAnalogRes  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000004CC
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000005BC
 
 NAME: sysCfgProgInput  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000004D0
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000005C0
 
 NAME: sysDBase_SetExtTable  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000400
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000004F0
 
 NAME: sysMbMRtu_OpenChn2  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000059C
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000068C
 
 NAME: sysMbMRtu_MemoryMapping  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000005A0
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000690

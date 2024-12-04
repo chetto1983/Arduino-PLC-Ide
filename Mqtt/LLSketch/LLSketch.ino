@@ -2,7 +2,7 @@
 
 /* opta_1.2.0
       - ArduinoJson (7.2.0)
-      - PubSubClient (2.8.0)
+      - ArduinoMqttClient (0.1.8)
 */
 
 struct PLCSharedVarsInput_t
@@ -22,36 +22,35 @@ struct PLCSharedVarsOutput_t
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(1274156522);
+AlPlc AxelPLC(2051503211);
 
-#include <PubSubClient.h>
 #include <ArduinoJson.h>
-
+#include <ArduinoMqttClient.h>
 
 
 
 IPAddress ip_Mqtt (192, 168, 1, 110);
 #define topic "Stazione1"
-String clientName = "OptaStazione1";
 EthernetClient ethClient;
-PubSubClient client(ethClient);
+MqttClient client(ethClient);
+
 JsonDocument doc;
 long lastReconnectAttempt = 0;
 unsigned int fsm = 0;
 unsigned int total_retry = 0;
+bool conncected = false;
 
 boolean reconnect()
 {
   // Ensure clean disconnect
-  client.disconnect();
-  delay(100);
 
   Serial.println("Attempting MQTT connection...");
 
   // Attempt to connect to the MQTT broker
-  clientName += String(random(0xffff), HEX);
-  client.connect(clientName.c_str());
-  if (client.connect(clientName.c_str()))
+  
+  // boolean connect(const char* id, const char* willTopic, uint8_t willQos, boolean willRetain, const char* willMessage);
+  client.connect(ip_Mqtt, 1883);
+  if (client.connect(ip_Mqtt, 1883))
   {
     Serial.println("connected");
     return true;
@@ -59,7 +58,7 @@ boolean reconnect()
   else
   {
     Serial.print("failed, rc=");
-    Serial.println(String(client.state()));
+    Serial.println(String(client.connectError()));
     Serial.println(" try again in 5 seconds");
     return false;
   }
@@ -76,7 +75,6 @@ void setup()
 	IPAddress subnet(255, 255, 255, 0);
 	Ethernet.begin(ip, dns, gateway, subnet);
 	// If cable is not connected this will block the start of PLC with about 60s of timeout!
-	client.setServer(ip_Mqtt, 1883);
 
 
 	
@@ -91,7 +89,10 @@ void loop()
     {
         PLCIn.Mqtt_Ok = false;
         PLCIn.Send_Ok = false;
-        PLCIn.Mqtt_Ok = false;
+        PLCIn.Send_Ko = false;
+        conncected = false;
+        fsm = 0;
+        
         long now = millis();
         if (now - lastReconnectAttempt > 5000) 
         {
@@ -101,6 +102,7 @@ void loop()
             {
                 lastReconnectAttempt = 0;
                 PLCIn.Mqtt_Ok = true;
+                conncected= true;
             }
             total_retry++;
             
@@ -115,7 +117,7 @@ void loop()
     
     send_mqtt();
     
-    client.loop();
+    client.poll();
     
 
 }
@@ -127,7 +129,7 @@ void send_mqtt()
     {
         case 0:
         // passo iniziale
-        if (PLCOut.Send_Data && PLCIn.Mqtt_Ok)
+        if (PLCOut.Send_Data && conncected)
         {
             fsm = 1;
         }
@@ -138,20 +140,13 @@ void send_mqtt()
         char buffer[256];
         doc["Temperatura"] = PLCOut.Temperatura;
         doc["Umidita"] = PLCOut.Umidita;
-        
         serializeJson(doc, buffer);
-
-        if (client.publish(topic, buffer))
-        {
-            PLCIn.Send_Ok = true;
-            fsm = 2;
-        }
-        else
-        {
-            PLCIn.Send_Ko = true;
-            fsm = 2;
-        }
         
+        client.beginMessage(topic);
+        client.print(buffer);
+        client.endMessage();
+        PLCIn.Send_Ok = true;
+        fsm = 2;
         break;
         
         case 2:
@@ -162,7 +157,6 @@ void send_mqtt()
             PLCIn.Send_Ko = false;
             fsm = 0; 
         }
-        
         break;
     }
 }

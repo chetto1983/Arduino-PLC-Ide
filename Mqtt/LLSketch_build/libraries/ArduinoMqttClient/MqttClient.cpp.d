@@ -1,6 +1,6 @@
-C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\Mqtt\LLSketch_build\libraries\PubSubClient\PubSubClient.cpp.o: \
- C:\Users\Davide\AppData\Local\T\A\internal\PubSubClient_2.8.0_61c8a47debd6e04e\PubSubClient\src\PubSubClient.cpp \
- C:\Users\Davide\AppData\Local\T\A\internal\PubSubClient_2.8.0_61c8a47debd6e04e\PubSubClient\src\PubSubClient.h \
+C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\Mqtt\LLSketch_build\libraries\ArduinoMqttClient\MqttClient.cpp.o: \
+ C:\Users\Davide\AppData\Local\T\A\internal\ArduinoMqttClient_0.1.8_b1e57bf359553881\ArduinoMqttClient\src\MqttClient.cpp \
+ C:\Users\Davide\AppData\Local\T\A\internal\ArduinoMqttClient_0.1.8_b1e57bf359553881\ArduinoMqttClient\src\MqttClient.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/Arduino.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\variants\OPTA/pinmode_arduino.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\variants\OPTA/mbed_config.h \
@@ -179,7 +179,5 @@ C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\Mqtt\LLSketch_build\libraries\P
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/HardwareSerial.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/timer.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/overloads.h \
- C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/IPAddress.h \
  C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/Client.h \
- c:\users\davide\appdata\local\t\a\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino\api\client.h \
- C:\Users\Davide\AppData\Local\T\A\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino/api/deprecated/Stream.h
+ c:\users\davide\appdata\local\t\a\internal\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\cores\arduino\api\client.h

@@ -66,7 +66,7 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="MqttHandeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1734086199" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="MqttHandeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1734096331" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Clock_1Hz" type="Clock_Gen"/>
@@ -110,10 +110,10 @@
 											<operator name="EQ" id="2">
 												<inputs>
 													<pin name="EN" neg="false" type="BOOL"/>
-													<pin name="0" neg="false" type="">
+													<pin name="0" neg="false" type="UNDEF">
 														<var name="Azioni" id="3"/>
 													</pin>
-													<pin name="1" neg="false" type="">
+													<pin name="1" neg="false" type="UNDEF">
 														<const name="0" id="6"/>
 													</pin>
 												</inputs>
@@ -140,7 +140,7 @@
 										<operator name="MOVE" id="2">
 											<inputs>
 												<pin name="EN" neg="false" type="BOOL"/>
-												<pin name="0" neg="false" type="">
+												<pin name="0" neg="false" type="UNDEF">
 													<var name="Azioni" id="3"/>
 												</pin>
 											</inputs>
@@ -148,7 +148,7 @@
 												<pin name="ENO" neg="false" type="BOOL">
 													<outputLine/>
 												</pin>
-												<pin name="1" neg="false" type="">
+												<pin name="1" neg="false" type="UNDEF">
 													<var name="Transizioni" id="4"/>
 												</pin>
 											</outputs>
@@ -165,7 +165,7 @@
 												<pin name="EN" neg="false" type="BOOL">
 													<contact name="Mqtt_Ok" type="Closed" id="2"/>
 												</pin>
-												<pin name="0" neg="false" type="">
+												<pin name="0" neg="false" type="UNDEF">
 													<const name="0" id="7"/>
 												</pin>
 											</inputs>
@@ -173,7 +173,7 @@
 												<pin name="ENO" neg="false" type="BOOL">
 													<outputLine/>
 												</pin>
-												<pin name="1" neg="false" type="">
+												<pin name="1" neg="false" type="UNDEF">
 													<var name="Azioni" id="6"/>
 												</pin>
 											</outputs>
@@ -187,7 +187,6 @@
 									<input>
 										<and id="3">
 											<contact name="Transizioni.0" type="Normal" id="0"/>
-											<contact name="Mqtt_Ok" type="Normal" id="5"/>
 											<contact name="SendClock.Q" type="Normal" id="2"/>
 										</and>
 									</input>
@@ -251,25 +250,53 @@
 									<outputs/>
 								</assignment>
 							</network>
-							<network label="" id="9" nextID="29" comment="" disabled="false" disableCondition="">
+							<network label="" id="9" nextID="42" comment="" disabled="false" disableCondition="">
 								<assignment fromTmpVar="">
 									<input>
-										<contact name="Azioni.1" type="Normal" id="26"/>
-									</input>
-									<outputs>
-										<tmpVar id="17"/>
-									</outputs>
-								</assignment>
-								<assignment fromTmpVar="17">
-									<input>
-										<operator name="MOVE" id="5">
+										<operator name="MOVE" id="32">
 											<inputs>
 												<pin name="EN" neg="false" type="BOOL">
-													<operator name="MOVE" id="2">
+													<operator name="MOVE" id="29">
 														<inputs>
-															<pin name="EN" neg="false" type="BOOL"/>
+															<pin name="EN" neg="false" type="BOOL">
+																<operator name="MOVE" id="5">
+																	<inputs>
+																		<pin name="EN" neg="false" type="BOOL">
+																			<operator name="MOVE" id="2">
+																				<inputs>
+																					<pin name="EN" neg="false" type="BOOL">
+																						<contact name="Azioni.1" type="Normal" id="26"/>
+																					</pin>
+																					<pin name="0" neg="false" type="UNDEF">
+																						<expression name="TO_REAL(Sens_Temperature) / 1000.0" id="14"/>
+																					</pin>
+																				</inputs>
+																				<outputs>
+																					<pin name="ENO" neg="false" type="BOOL">
+																						<outputLine/>
+																					</pin>
+																					<pin name="1" neg="false" type="UNDEF">
+																						<var name="Temperatura" id="4"/>
+																					</pin>
+																				</outputs>
+																			</operator>
+																		</pin>
+																		<pin name="0" neg="false" type="UNDEF">
+																			<expression name="TO_REAL(Sens_Humidity) /1000.0" id="15"/>
+																		</pin>
+																	</inputs>
+																	<outputs>
+																		<pin name="ENO" neg="false" type="BOOL">
+																			<outputLine/>
+																		</pin>
+																		<pin name="1" neg="false" type="UNDEF">
+																			<var name="Umidita" id="8"/>
+																		</pin>
+																	</outputs>
+																</operator>
+															</pin>
 															<pin name="0" neg="false" type="UNDEF">
-																<expression name="TO_REAL(Sens_Temperature) / 1000.0" id="14"/>
+																<expression name="To_BOOL(Sens_TempOk)" id="30"/>
 															</pin>
 														</inputs>
 														<outputs>
@@ -277,13 +304,13 @@
 																<outputLine/>
 															</pin>
 															<pin name="1" neg="false" type="UNDEF">
-																<var name="Temperatura" id="4"/>
+																<var name="SensTemp_Ok" id="31"/>
 															</pin>
 														</outputs>
 													</operator>
 												</pin>
 												<pin name="0" neg="false" type="UNDEF">
-													<expression name="TO_REAL(Sens_Humidity) /1000.0" id="15"/>
+													<expression name="To_BOOL(Sens_HumOk)" id="33"/>
 												</pin>
 											</inputs>
 											<outputs>
@@ -291,51 +318,13 @@
 													<outputLine/>
 												</pin>
 												<pin name="1" neg="false" type="UNDEF">
-													<var name="Umidita" id="8"/>
-												</pin>
-											</outputs>
-										</operator>
-									</input>
-									<outputs/>
-								</assignment>
-								<assignment fromTmpVar="17">
-									<input>
-										<operator name="MOVE" id="23">
-											<inputs>
-												<pin name="EN" neg="false" type="BOOL">
-													<operator name="MOVE" id="20">
-														<inputs>
-															<pin name="EN" neg="false" type="BOOL"/>
-															<pin name="0" neg="false" type="UNDEF">
-																<expression name="To_BOOL(Sens_TempOk)" id="21"/>
-															</pin>
-														</inputs>
-														<outputs>
-															<pin name="ENO" neg="false" type="BOOL">
-																<outputLine/>
-															</pin>
-															<pin name="1" neg="false" type="UNDEF">
-																<var name="SensTemp_Ok" id="22"/>
-															</pin>
-														</outputs>
-													</operator>
-												</pin>
-												<pin name="0" neg="false" type="UNDEF">
-													<expression name="To_BOOL(Sens_HumOk)" id="24"/>
-												</pin>
-											</inputs>
-											<outputs>
-												<pin name="ENO" neg="false" type="BOOL">
-													<outputLine/>
-												</pin>
-												<pin name="1" neg="false" type="UNDEF">
-													<var name="SensHum_Ok" id="25"/>
+													<var name="SensHum_Ok" id="34"/>
 												</pin>
 											</outputs>
 										</operator>
 									</input>
 									<outputs>
-										<coil name="DataReady" type="Normal" id="28"/>
+										<coil name="DataReady" type="Normal" id="41"/>
 									</outputs>
 								</assignment>
 							</network>
@@ -7906,7 +7895,7 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="Mqtt" nextID="148">
+			<root name="Mqtt" nextID="161">
 				<GlobalVars name="Global_vars" id="2"/>
 				<GlobalVars name="Ungrouped_vars" id="13"/>
 				<Pou name="MqttHandeler" id="16"/>

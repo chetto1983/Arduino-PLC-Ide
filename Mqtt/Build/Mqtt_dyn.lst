@@ -67,72 +67,72 @@
 0000	00 00 04 00 0D 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000067C
-000C	7C 06 00 00 
+*		Code offset: 0x00000670
+000C	70 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #12 OF DATA BLOCK %Q4
 0010	00 00 04 00 0C 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000678
-001C	78 06 00 00 
+*		Code offset: 0x0000066C
+001C	6C 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %I4
 0020	00 00 04 00 00 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000664
-002C	64 06 00 00 
+*		Code offset: 0x00000658
+002C	58 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %I60010
 0030	00 00 6A EA 01 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000A4C
-003C	4C 0A 00 00 
+*		Code offset: 0x00000A3C
+003C	3C 0A 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #8 OF DATA BLOCK %Q4
 0040	00 00 04 00 08 00 00 00 02 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000674
-004C	74 06 00 00 
+*		Code offset: 0x00000668
+004C	68 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #2 OF DATA BLOCK %M100
 0050	00 00 64 00 02 00 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000654
-005C	54 06 00 00 
+*		Code offset: 0x00000648
+005C	48 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %I4
 0060	00 00 04 00 01 00 00 00 01 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000668
-006C	68 06 00 00 
+*		Code offset: 0x0000065C
+006C	5C 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #6 OF DATA BLOCK %M100
 0070	00 00 64 00 06 00 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000065C
-007C	5C 06 00 00 
+*		Code offset: 0x00000650
+007C	50 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #5 OF DATA BLOCK %Q1
 0080	00 00 01 00 05 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000064C
-008C	4C 06 00 00 
+*		Code offset: 0x00000640
+008C	40 06 00 00 
 
 *
 *	2 REFERENCE(S) TO 32-BIT VAR AT BYTE #0 OF DATA BLOCK %M60000
@@ -151,32 +151,32 @@
 00A4	00 00 04 00 00 00 00 00 02 01 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x0000066C
-00B0	6C 06 00 00 
+*		Code offset: 0x00000660
+00B0	60 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #0 OF DATA BLOCK %M100
 00B4	00 00 64 00 00 00 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000650
-00C0	50 06 00 00 
+*		Code offset: 0x00000644
+00C0	44 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 32-BIT VAR AT BYTE #4 OF DATA BLOCK %Q4
 00C4	00 00 04 00 04 00 00 00 02 04 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000670
-00D0	70 06 00 00 
+*		Code offset: 0x00000664
+00D0	64 06 00 00 
 
 *
 *	1 REFERENCE(S) TO 16-BIT VAR AT BYTE #4 OF DATA BLOCK %M100
 00D4	00 00 64 00 04 00 00 00 00 02 01 00 
 
 *		Instruction type: 0x00
-*		Code offset: 0x00000658
-00E0	58 06 00 00 
+*		Code offset: 0x0000064C
+00E0	4C 06 00 00 
 
 
 ***************************************************
@@ -184,28 +184,28 @@
 ***************************************************
 
 NAME: sysMbMRtu_SlaveAddToNetList2  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000980
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000970
 
 NAME: sysCfgAnalogRes  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000007DC
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000007CC
 
 NAME: sysCfgProgInput  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000007E0
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000007D0
 
 NAME: sysDBase_SetExtTable  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000710
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000700
 
 NAME: sysMbMRtu_NewSlaveMessage3  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000988
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000978
 
 NAME: sysMbMRtu_OpenChn2  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000097C
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000096C
 
 NAME: sysMbMRtu_MsgConfigCompleted  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000984
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000974
 
 NAME: sysMbMRtu_SlavePrmInteger  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000A44
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000A34
 
 NAME: sysMbMRtu_MemoryMapping  - NUM: 1
-	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000098C
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x0000097C

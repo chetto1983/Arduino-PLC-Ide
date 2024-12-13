@@ -50,7 +50,7 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="MqttHandeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1733300942" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="MqttHandeler" version="1.0.0" creationDate="1733151450" lastModifiedDate="1733999671" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Clock_1Hz" type="Clock_Gen"/>
@@ -94,7 +94,7 @@
 														<inputs>
 															<pin name="EN" neg="false" type="BOOL">
 																<and id="13">
-																	<contact name="SendMqtt" type="Normal" id="0"/>
+																	<contact name="LedGreen" type="Positive" id="0"/>
 																	<contact name="Mqtt_Ok" type="Normal" id="12"/>
 																</and>
 															</pin>
@@ -7737,7 +7737,7 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="Mqtt" nextID="58">
+			<root name="Mqtt" nextID="65">
 				<GlobalVars name="Global_vars" id="2"/>
 				<GlobalVars name="Ungrouped_vars" id="13"/>
 				<Pou name="MqttHandeler" id="16"/>

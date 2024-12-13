@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- #DEFINE PREFIX QFA20502FMO_1p0 -->
+<devicetemplate>
+	<deviceinfo caption="QFA2050/MO" name="QFA2050/MO" version="1.0" icon="modbus.ico" deviceid="QFA20502FMO_1p0" editingEnabled="true">
+		<description>Temperature and Humidity</description>
+		<protocols>
+			<protocol>ModbusRTU_master</protocol>
+			<protocol>ModbusTCP_master</protocol>
+		</protocols>
+	</deviceinfo>
+	<deviceconfig>
+		<parameters nextIpa="5">
+			<!--		<par ipa="1" readonly="no" name="Example" typepar="short" typetarg="short" defval="0" scale="1" offs="0" um="" form="" descr="Example parameter" min="0" max="9999" shortdescr=""/>
+				<protocol name="Modbus" commaddr="1" commsubindex="0"/>
+			</par> -->
+			<par ipa="0" readonly="false" name="Temperature" typepar="short" typetarg="short" form="" descr="Scaling 0.01">
+				<protocol name="Modbus" commaddr="1" commsubindex="0"/>
+			</par>
+			<par ipa="1" readonly="false" name="Temperature reliability" typepar="short" typetarg="short" form="" descr="0 – No error 1- Error">
+				<protocol name="Modbus" commaddr="2" commsubindex="0"/>
+			</par>
+			<par ipa="2" readonly="false" name="Relative humidity value" typepar="short" typetarg="short" form="" descr="0…100 % Scaling 0.01">
+				<protocol name="Modbus" commaddr="3" commsubindex="0"/>
+			</par>
+			<par ipa="3" readonly="false" name="Humidity reliability" typepar="short" typetarg="short" form="" descr="0 – No error 1- Error">
+				<protocol name="Modbus" commaddr="4" commsubindex="0"/>
+			</par>
+			<par ipa="4" readonly="false" name="System unit" typepar="short" typetarg="short" form="" descr="0 – Celsius 1 – Fahrenheit">
+				<protocol name="Modbus" commaddr="401" commsubindex="0"/>
+			</par>
+		</parameters>
+		<enums/>
+	</deviceconfig>
+	<plcconfig>
+		<hmi>
+			<tree name="tree1">
+				<node name="PREFIX" caption="QFA2050/MO" icon="modbus.ico" datalink="PREFIX" menu="menuRemoveEnableDisable" window="ModbusCustomMain"/>
+			</tree>
+		</hmi>
+		<templatedata>
+			<PREFIX enabled="true">
+				<ModbusCustom_config>
+					<modbusAddress>1</modbusAddress>
+					<nodeNumber>-1</nodeNumber>
+					<pollTime>0</pollTime>
+					<timeout>1000</timeout>
+					<ip/>
+					<inputs/>
+					<outputs/>
+					<turnAround>0</turnAround>
+					<sendParams/>
+					<minPollTime>1</minPollTime>
+				</ModbusCustom_config>
+			</PREFIX>
+		</templatedata>
+		<datadef version="2.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="TModbusCustom">
+								<xs:attribute name="overlappedBitRegMaps" type="xs:boolean" fixed="0"/>
+								<xs:attribute name="maxMsgSizeReg" type="xs:integer" fixed="120"/>
+								<xs:attribute name="maxMsgSizeBit" type="xs:integer" fixed="2000"/>
+								<xs:attribute name="useWriteSingleCoil" type="xs:boolean" fixed="0"/>
+								<xs:attribute name="useWriteSingleReg" type="xs:boolean" fixed="0"/>
+								<xs:attribute name="addressType" type="xs:string" fixed="modbus"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+</devicetemplate>

@@ -20,11 +20,13 @@ struct PLCSharedVarsOutput_t
 	bool Send_Data;
 	float Temperatura;
 	float Umidita;
+	bool SensTemp_Ok;
+	bool SensHum_Ok;
 };
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(2051503211);
+AlPlc AxelPLC(936861442);
 
 #include <ArduinoJson.h>
 #include <ArduinoMqttClient.h>
@@ -42,15 +44,15 @@ unsigned int fsm = 0;
 unsigned int total_retry = 0;
 bool conncected = false;
 
-#line 43 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 45 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 boolean reconnect();
-#line 68 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 70 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 void setup();
-#line 86 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 88 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 void loop();
-#line 126 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 128 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 void send_mqtt();
-#line 43 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 45 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 boolean reconnect()
 {
   // Ensure clean disconnect
@@ -150,7 +152,9 @@ void send_mqtt()
         // pubblico dati
         char buffer[256];
         doc["Temperatura"] = PLCOut.Temperatura;
+        doc["SensTempStat"] = PLCOut.SensTemp_Ok;
         doc["Umidita"] = PLCOut.Umidita;
+        doc["SensHumStat"] = PLCOut.SensHum_Ok;
         serializeJson(doc, buffer);
         
         client.beginMessage(topic);

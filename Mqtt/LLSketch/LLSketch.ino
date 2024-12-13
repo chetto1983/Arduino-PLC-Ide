@@ -18,11 +18,13 @@ struct PLCSharedVarsOutput_t
 	bool Send_Data;
 	float Temperatura;
 	float Umidita;
+	bool SensTemp_Ok;
+	bool SensHum_Ok;
 };
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(2051503211);
+AlPlc AxelPLC(936861442);
 
 #include <ArduinoJson.h>
 #include <ArduinoMqttClient.h>
@@ -139,7 +141,9 @@ void send_mqtt()
         // pubblico dati
         char buffer[256];
         doc["Temperatura"] = PLCOut.Temperatura;
+        doc["SensTempStat"] = PLCOut.SensTemp_Ok;
         doc["Umidita"] = PLCOut.Umidita;
+        doc["SensHumStat"] = PLCOut.SensHum_Ok;
         serializeJson(doc, buffer);
         
         client.beginMessage(topic);

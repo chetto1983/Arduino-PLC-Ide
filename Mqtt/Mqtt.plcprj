@@ -7895,7 +7895,7 @@ END_VAR
 			</src>
 		</aux>
 		<workspace>
-			<root name="Mqtt" nextID="161">
+			<root name="Mqtt" nextID="200">
 				<GlobalVars name="Global_vars" id="2"/>
 				<GlobalVars name="Ungrouped_vars" id="13"/>
 				<Pou name="MqttHandeler" id="16"/>
@@ -8091,6 +8091,7 @@ bool conncected = false;
 
 boolean reconnect()
 {
+    
   // Ensure clean disconnect
 
   Serial.println("Attempting MQTT connection...");
@@ -8207,6 +8208,7 @@ void send_mqtt()
             fsm = 0; 
         }
         break;
+        
     }
 }</SketchContent>
 					<SketchLibraries>

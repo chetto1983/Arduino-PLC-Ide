@@ -1,0 +1,155 @@
+***********************************************************************
+*
+*	DYNAMIC LINK AND INDIRECT ALLOCATION LISTING FOR: OptaMailSender
+*
+***********************************************************************
+
+
+***************************************************
+	 FIRST CODE AREA
+***************************************************
+
+***************************************************
+	 DATABLOCK PATCHES
+***************************************************
+*
+* List of data blocks that will be checked run-time for consistency with
+* their definition available at compile-time
+*
+*
+*	REQUIREMENTS for DATA BLOCK %Q1
+*		Process image: 0
+*		Number of elements: 7
+*		Data size (bytes): 1
+0000	00 02 01 00 07 00 00 00 01 00 00 00 
+
+*
+*	REQUIREMENTS for DATA BLOCK %Q4
+*		Process image: 0
+*		Number of elements: 512
+*		Data size (bytes): 1
+000C	00 02 04 00 00 02 00 00 01 00 00 00 
+
+*
+*	REQUIREMENTS for DATA BLOCK %I1
+*		Process image: 0
+*		Number of elements: 1
+*		Data size (bytes): 1
+0018	00 01 01 00 01 00 00 00 01 00 00 00 
+
+*
+*	REQUIREMENTS for DATA BLOCK %I4
+*		Process image: 0
+*		Number of elements: 512
+*		Data size (bytes): 1
+0024	00 01 04 00 00 02 00 00 01 00 00 00 
+
+*
+*	REQUIREMENTS for DATA BLOCK %M60000
+*		Process image: 0
+*		Number of elements: 1
+*		Data size (bytes): 4
+0030	00 00 60 EA 01 00 00 00 04 00 00 00 
+
+*
+* List of all references to data allocated on data blocks
+* along with the whole information required by the run-time linker
+*
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %Q4
+0000	00 00 04 00 01 00 00 00 02 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000570
+000C	70 05 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %Q1
+0010	00 00 01 00 00 00 00 00 02 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000548
+001C	48 05 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %I4
+0020	00 00 04 00 00 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000564
+002C	64 05 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %I1
+0030	00 00 01 00 00 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000554
+003C	54 05 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %I4
+0040	00 00 04 00 01 00 00 00 01 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000568
+004C	68 05 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #5 OF DATA BLOCK %Q1
+0050	00 00 01 00 05 00 00 00 02 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000550
+005C	50 05 00 00 
+
+*
+*	2 REFERENCE(S) TO 32-BIT VAR AT BYTE #0 OF DATA BLOCK %M60000
+0060	00 00 60 EA 00 00 00 00 00 04 02 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x000001A8
+006C	A8 01 00 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x00000214
+0070	14 02 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #0 OF DATA BLOCK %Q4
+0074	00 00 04 00 00 00 00 00 02 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x0000056C
+0080	6C 05 00 00 
+
+*
+*	1 REFERENCE(S) TO 8-BIT VAR AT BYTE #1 OF DATA BLOCK %Q1
+0084	00 00 01 00 01 00 00 00 02 01 01 00 
+
+*		Instruction type: 0x00
+*		Code offset: 0x0000054C
+0090	4C 05 00 00 
+
+
+***************************************************
+	 FUNCTION PATCHES
+***************************************************
+
+NAME: sysCfgAnalogRes  - NUM: 1
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000006CC
+
+NAME: sysCfgProgInput  - NUM: 1
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000006D0
+
+NAME: sysDBase_SetExtTable  - NUM: 1
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x00000600
+
+NAME: WSTRING_TO_STRING  - NUM: 1
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000004F0
+
+NAME: ST_WSTRING_SAFE  - NUM: 1
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000004F4
+
+NAME: ST_STRING_SAFE  - NUM: 1
+	 Patch - TYPE: 0x0 - CODE OFFSET: 0x000004F8

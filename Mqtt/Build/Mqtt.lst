@@ -535,13 +535,13 @@ END_PROGRAM
 #4			MOVE		500,CLOCK_1HZ.TEMPO {R:1$2}
 (*) UDINT
 3000029A  F44F 70FA		mov r0, #500 ; 500
-3000029E  F8DF 7360		ldr r7, [pc, #+864] ; 0x2000031C
+3000029E  F8DF 7360		ldr r7, [pc, #+864] ; 0x20000360
 300002A2  6038     		str r0, [r7]
 
 #5			CAL		CLOCK_1HZ {R:1$2}
 (*) UDINT
 300002A4  E92D 0021		stmdb sp!, { r0, r5 }
-300002A8  F8DF 5350		ldr r5, [pc, #+848] ; 0x200002F0
+300002A8  F8DF 5350		ldr r5, [pc, #+848] ; 0x20000334
 300002AC  467C     		mov r4, pc
 300002AE  3C98     		sub r4, r4, #+0x98 ; 0x30000218
 300002B0  F044 0401		orr r4, r4, #1
@@ -550,7 +550,7 @@ END_PROGRAM
 
 #6			MOVE		CLOCK_1HZ.OUT,LEDGREEN {R:1$2}
 (*) UDINT
-300002BA  F8DF 7348		ldr r7, [pc, #+840] ; 0x20000320
+300002BA  F8DF 7348		ldr r7, [pc, #+840] ; 0x20000364
 300002BE  7838     		ldrb r0, [r7]
 300002C0  F8DF 737C		ldr r7, [pc, #+892] ; 0x2401E63D
 300002C4  7038     		strb r0, [r7]
@@ -563,7 +563,7 @@ END_PROGRAM
 #9			(* Network 2 *)
 #10			LD		AZIONI {R:2$3}
 (*) UNDEF
-300002C8  F8DF 7344		ldr r7, [pc, #+836] ; 0x200003BE
+300002C8  F8DF 733C		ldr r7, [pc, #+828] ; 0x20000368
 300002CC  8838     		ldrh r0, [r7]
 
 #11			EQ		0 {R:2$6}
@@ -574,7 +574,7 @@ END_PROGRAM
 
 #12			ST		DUMMYBIT {R:2$5}
 (*) BOOL
-300002D8  F8DF 7330		ldr r7, [pc, #+816] ; 0x200003BD
+300002D8  F8DF 731C		ldr r7, [pc, #+796] ; 0x20000316
 300002DC  7038     		strb r0, [r7]
 
 #13			LD		TRUE
@@ -583,7 +583,7 @@ END_PROGRAM
 
 #14			AND		DUMMYBIT {R:2$7}
 (*) BOOL
-300002E0  F8DF 7328		ldr r7, [pc, #+808] ; 0x200003BD
+300002E0  F8DF 7314		ldr r7, [pc, #+788] ; 0x20000316
 300002E4  783F     		ldrb r7, [r7]
 300002E6  4038     		and r0, r0, r7
 
@@ -594,7 +594,7 @@ END_PROGRAM
 300002EC  B082     		sub sp, sp, #8
 300002EE  F8CD 0000		str r0, [sp]
 300002F2  2001     		mov r0, #1
-300002F4  F8DF 7318		ldr r7, [pc, #+792] ; 0x200003BE
+300002F4  F8DF 7310		ldr r7, [pc, #+784] ; 0x20000368
 300002F8  B082     		sub sp, sp, #8
 300002FA  F8CD 7000		str r7, [sp]
 300002FE  883F     		ldrh r7, [r7]
@@ -610,12 +610,12 @@ END_PROGRAM
 #17			(* Network 3 *)
 #18			LD		AZIONI {R:3$3}
 (*) UNDEF
-30000314  F8DF 72F8		ldr r7, [pc, #+760] ; 0x200003BE
+30000314  F8DF 72F0		ldr r7, [pc, #+752] ; 0x20000368
 30000318  8838     		ldrh r0, [r7]
 
 #19			ST		TRANSIZIONI {R:3$4}
 (*) WORD
-3000031A  F8DF 72F8		ldr r7, [pc, #+760] ; 0x200003C0
+3000031A  F8DF 72F0		ldr r7, [pc, #+752] ; 0x2000036A
 3000031E  8038     		strh r0, [r7]
 
 #20			LD		TRUE
@@ -634,7 +634,7 @@ END_PROGRAM
 
 #24			ST		$$VAR$1
 (*) BOOL
-30000332  F8DF 72C4		ldr r7, [pc, #+708] ; 0x200002EF
+30000332  F8DF 72DC		ldr r7, [pc, #+732] ; 0x2000036C
 30000336  7038     		strb r0, [r7]
 
 #25			JMPCN	$$LAB$1
@@ -649,26 +649,26 @@ END_PROGRAM
 
 #27			ST		AZIONI {R:4$6}
 (*) USINT
-30000340  F8DF 72CC		ldr r7, [pc, #+716] ; 0x200003BE
+30000340  F8DF 72C4		ldr r7, [pc, #+708] ; 0x20000368
 30000344  8038     		strh r0, [r7]
 
 #28		$$LAB$1:
 #29			LD		$$VAR$1
 (*) UNDEF
-30000346  F8DF 72B0		ldr r7, [pc, #+688] ; 0x200002EF
+30000346  F8DF 72C8		ldr r7, [pc, #+712] ; 0x2000036C
 3000034A  7838     		ldrb r0, [r7]
 
 #30		 
 #31			(* Network 5 *)
 #32			LD		TRANSIZIONI.0 {R:5$0}
 (*) UNDEF
-3000034C  F8DF 72C4		ldr r7, [pc, #+708] ; 0x200003C0
+3000034C  F8DF 72BC		ldr r7, [pc, #+700] ; 0x2000036A
 30000350  8838     		ldrh r0, [r7]
 30000352  F3C0 0000		ubfx r0, r0, #0, #1
 
 #33			AND		SENDCLOCK.Q {R:5$2}
 (*) BOOL
-30000356  F8DF 72D0		ldr r7, [pc, #+720] ; 0x200003D0
+30000356  F8DF 72D4		ldr r7, [pc, #+724] ; 0x2000037C
 3000035A  783F     		ldrb r7, [r7]
 3000035C  4038     		and r0, r0, r7
 
@@ -679,7 +679,7 @@ END_PROGRAM
 30000362  B082     		sub sp, sp, #8
 30000364  F8CD 0000		str r0, [sp]
 30000368  2000     		mov r0, #0
-3000036A  F8DF 72A4		ldr r7, [pc, #+676] ; 0x200003BE
+3000036A  F8DF 729C		ldr r7, [pc, #+668] ; 0x20000368
 3000036E  B082     		sub sp, sp, #8
 30000370  F8CD 7000		str r7, [sp]
 30000374  883F     		ldrh r7, [r7]
@@ -698,7 +698,7 @@ END_PROGRAM
 3000038E  B082     		sub sp, sp, #8
 30000390  F8CD 0000		str r0, [sp]
 30000394  2001     		mov r0, #1
-30000396  F8DF 7278		ldr r7, [pc, #+632] ; 0x200003BE
+30000396  F8DF 7270		ldr r7, [pc, #+624] ; 0x20000368
 3000039A  B082     		sub sp, sp, #8
 3000039C  F8CD 7000		str r7, [sp]
 300003A0  883F     		ldrh r7, [r7]
@@ -714,13 +714,13 @@ END_PROGRAM
 #37			(* Network 6 *)
 #38			LD		TRANSIZIONI.1 {R:6$0}
 (*) UNDEF
-300003B6  F8DF 725C		ldr r7, [pc, #+604] ; 0x200003C0
+300003B6  F8DF 7254		ldr r7, [pc, #+596] ; 0x2000036A
 300003BA  8838     		ldrh r0, [r7]
 300003BC  F3C0 0040		ubfx r0, r0, #1, #1
 
 #39			AND		DATAREADY {R:6$2}
 (*) BOOL
-300003C0  F8DF 7254		ldr r7, [pc, #+596] ; 0x200003C3
+300003C0  F8DF 7250		ldr r7, [pc, #+592] ; 0x2000036D
 300003C4  783F     		ldrb r7, [r7]
 300003C6  4038     		and r0, r0, r7
 
@@ -731,7 +731,7 @@ END_PROGRAM
 300003CC  B082     		sub sp, sp, #8
 300003CE  F8CD 0000		str r0, [sp]
 300003D2  2000     		mov r0, #0
-300003D4  F8DF 7238		ldr r7, [pc, #+568] ; 0x200003BE
+300003D4  F8DF 7230		ldr r7, [pc, #+560] ; 0x20000368
 300003D8  B082     		sub sp, sp, #8
 300003DA  F8CD 7000		str r7, [sp]
 300003DE  883F     		ldrh r7, [r7]
@@ -750,7 +750,7 @@ END_PROGRAM
 300003F8  B082     		sub sp, sp, #8
 300003FA  F8CD 0000		str r0, [sp]
 300003FE  2001     		mov r0, #1
-30000400  F8DF 720C		ldr r7, [pc, #+524] ; 0x200003BE
+30000400  F8DF 7204		ldr r7, [pc, #+516] ; 0x20000368
 30000404  B082     		sub sp, sp, #8
 30000406  F8CD 7000		str r7, [sp]
 3000040A  883F     		ldrh r7, [r7]
@@ -766,7 +766,7 @@ END_PROGRAM
 #43			(* Network 7 *)
 #44			LD		TRANSIZIONI.2 {R:7$0}
 (*) UNDEF
-30000420  F8DF 71F0		ldr r7, [pc, #+496] ; 0x200003C0
+30000420  F8DF 71E8		ldr r7, [pc, #+488] ; 0x2000036A
 30000424  8838     		ldrh r0, [r7]
 30000426  F3C0 0080		ubfx r0, r0, #2, #1
 
@@ -783,7 +783,7 @@ END_PROGRAM
 30000436  B082     		sub sp, sp, #8
 30000438  F8CD 0000		str r0, [sp]
 3000043C  2000     		mov r0, #0
-3000043E  F8DF 71D0		ldr r7, [pc, #+464] ; 0x200003BE
+3000043E  F8DF 71C8		ldr r7, [pc, #+456] ; 0x20000368
 30000442  B082     		sub sp, sp, #8
 30000444  F8CD 7000		str r7, [sp]
 30000448  883F     		ldrh r7, [r7]
@@ -802,7 +802,7 @@ END_PROGRAM
 30000462  B082     		sub sp, sp, #8
 30000464  F8CD 0000		str r0, [sp]
 30000468  2001     		mov r0, #1
-3000046A  F8DF 71A4		ldr r7, [pc, #+420] ; 0x200003BE
+3000046A  F8DF 719C		ldr r7, [pc, #+412] ; 0x20000368
 3000046E  B082     		sub sp, sp, #8
 30000470  F8CD 7000		str r7, [sp]
 30000474  883F     		ldrh r7, [r7]
@@ -818,7 +818,7 @@ END_PROGRAM
 #49			(* Network 8 *)
 #50			LD		AZIONI.0 {R:8$0}
 (*) UNDEF
-3000048A  F8DF 7184		ldr r7, [pc, #+388] ; 0x200003BE
+3000048A  F8DF 717C		ldr r7, [pc, #+380] ; 0x20000368
 3000048E  8838     		ldrh r0, [r7]
 30000490  F3C0 0000		ubfx r0, r0, #0, #1
 
@@ -830,20 +830,20 @@ END_PROGRAM
 
 #52			ST		SENDCLOCK.IN {R:8$2}
 (*) BOOL
-3000049C  F8DF 7180		ldr r7, [pc, #+384] ; 0x200003C8
+3000049C  F8DF 7184		ldr r7, [pc, #+388] ; 0x20000374
 300004A0  7038     		strb r0, [r7]
 
 #53			MOVE		10000,SENDCLOCK.PT {R:8$2}
 (*) BOOL
 300004A2  F8DF 7150		ldr r7, [pc, #+336] ; 0x2710
 300004A6  4638     		mov r0, r7
-300004A8  F8DF 7178		ldr r7, [pc, #+376] ; 0x200003CC
+300004A8  F8DF 717C		ldr r7, [pc, #+380] ; 0x20000378
 300004AC  6038     		str r0, [r7]
 
 #54			CAL		SENDCLOCK {R:8$2}
 (*) UDINT
 300004AE  E92D 0021		stmdb sp!, { r0, r5 }
-300004B2  F8DF 5168		ldr r5, [pc, #+360] ; 0x200003C4
+300004B2  F8DF 516C		ldr r5, [pc, #+364] ; 0x20000370
 300004B6  F8DF 419C		ldr r4, [pc, #+412] ; 0x300001AC
 300004BA  F044 0401		orr r4, r4, #1
 300004BE  47A0     		blx r4
@@ -851,14 +851,14 @@ END_PROGRAM
 
 #55			LD		SENDCLOCK.Q {R:8$2}
 (*) UNDEF
-300004C4  F8DF 7160		ldr r7, [pc, #+352] ; 0x200003D0
+300004C4  F8DF 7164		ldr r7, [pc, #+356] ; 0x2000037C
 300004C8  7838     		ldrb r0, [r7]
 
 #56		 
 #57			(* Network 9 *)
 #58			LD		AZIONI.1 {R:9$26}
 (*) UNDEF
-300004CA  F8DF 7144		ldr r7, [pc, #+324] ; 0x200003BE
+300004CA  F8DF 713C		ldr r7, [pc, #+316] ; 0x20000368
 300004CE  8838     		ldrh r0, [r7]
 300004D0  F3C0 0040		ubfx r0, r0, #1, #1
 
@@ -887,12 +887,12 @@ END_PROGRAM
 
 #64			ST		$EXPR9$14	{R:9$14}
 (*) REAL
-300004FA  F8DF 713C		ldr r7, [pc, #+316] ; 0x20000428
+300004FA  F8DF 7134		ldr r7, [pc, #+308] ; 0x20000384
 300004FE  ED87 0A00		fsts s0, [r7]
 
 #65			LD		$EXPR9$14 {R:9$14}
 (*) UNDEF
-30000502  F8DF 7134		ldr r7, [pc, #+308] ; 0x20000428
+30000502  F8DF 712C		ldr r7, [pc, #+300] ; 0x20000384
 30000506  ED97 0A00		flds s0, [r7]
 
 #66			ST		TEMPERATURA {R:9$4}
@@ -903,13 +903,13 @@ END_PROGRAM
 #67		$$LAB$2:
 #68			LD		AZIONI.1
 (*) UNDEF
-30000512  F8DF 70FC		ldr r7, [pc, #+252] ; 0x200003BE
+30000512  F8DF 70F4		ldr r7, [pc, #+244] ; 0x20000368
 30000516  8838     		ldrh r0, [r7]
 30000518  F3C0 0040		ubfx r0, r0, #1, #1
 
 #69			ST		$$VAR$1
 (*) BOOL
-3000051C  F8DF 70D8		ldr r7, [pc, #+216] ; 0x200002EF
+3000051C  F8DF 70F0		ldr r7, [pc, #+240] ; 0x2000036C
 30000520  7038     		strb r0, [r7]
 
 #70			JMPCN	$$LAB$3
@@ -937,12 +937,12 @@ END_PROGRAM
 
 #75			ST		$EXPR9$15	{R:9$15}
 (*) REAL
-30000548  F8DF 70F0		ldr r7, [pc, #+240] ; 0x2000042C
+30000548  F8DF 70E8		ldr r7, [pc, #+232] ; 0x20000388
 3000054C  ED87 0A00		fsts s0, [r7]
 
 #76			LD		$EXPR9$15 {R:9$15}
 (*) UNDEF
-30000550  F8DF 70E8		ldr r7, [pc, #+232] ; 0x2000042C
+30000550  F8DF 70E0		ldr r7, [pc, #+224] ; 0x20000388
 30000554  ED97 0A00		flds s0, [r7]
 
 #77			ST		UMIDITA {R:9$8}
@@ -953,12 +953,12 @@ END_PROGRAM
 #78		$$LAB$3:
 #79			LD		$$VAR$1
 (*) UNDEF
-30000560  F8DF 7094		ldr r7, [pc, #+148] ; 0x200002EF
+30000560  F8DF 70AC		ldr r7, [pc, #+172] ; 0x2000036C
 30000564  7838     		ldrb r0, [r7]
 
 #80			ST		$$VAR$2
 (*) BOOL
-30000566  F8DF 70A0		ldr r7, [pc, #+160] ; 0x20000324
+30000566  F8DF 70B4		ldr r7, [pc, #+180] ; 0x2000036F
 3000056A  7038     		strb r0, [r7]
 
 #81			JMPCN	$$LAB$4
@@ -980,12 +980,12 @@ END_PROGRAM
 
 #85			ST		$EXPR9$30	{R:9$30}
 (*) BOOL
-30000584  F8DF 70AC		ldr r7, [pc, #+172] ; 0x20000417
+30000584  F8DF 7090		ldr r7, [pc, #+144] ; 0x2000036E
 30000588  7038     		strb r0, [r7]
 
 #86			LD		$EXPR9$30 {R:9$30}
 (*) UNDEF
-3000058A  F8DF 70A8		ldr r7, [pc, #+168] ; 0x20000417
+3000058A  F8DF 708C		ldr r7, [pc, #+140] ; 0x2000036E
 3000058E  7838     		ldrb r0, [r7]
 
 #87			ST		SENSTEMP_OK {R:9$31}
@@ -996,12 +996,12 @@ END_PROGRAM
 #88		$$LAB$4:
 #89			LD		$$VAR$2
 (*) UNDEF
-30000596  F8DF 7070		ldr r7, [pc, #+112] ; 0x20000324
+30000596  F8DF 7084		ldr r7, [pc, #+132] ; 0x2000036F
 3000059A  7838     		ldrb r0, [r7]
 
 #90			ST		$$VAR$3
 (*) BOOL
-3000059C  F8DF 708C		ldr r7, [pc, #+140] ; 0x200003E0
+3000059C  F8DF 7098		ldr r7, [pc, #+152] ; 0x2000038C
 300005A0  7038     		strb r0, [r7]
 
 #91			JMPCN	$$LAB$5
@@ -1023,12 +1023,12 @@ END_PROGRAM
 
 #95			ST		$EXPR9$33	{R:9$33}
 (*) BOOL
-300005BA  F8DF 7074		ldr r7, [pc, #+116] ; 0x20000416
+300005BA  F8DF 7080		ldr r7, [pc, #+128] ; 0x2000038D
 300005BE  7038     		strb r0, [r7]
 
 #96			LD		$EXPR9$33 {R:9$33}
 (*) UNDEF
-300005C0  F8DF 706C		ldr r7, [pc, #+108] ; 0x20000416
+300005C0  F8DF 7078		ldr r7, [pc, #+120] ; 0x2000038D
 300005C4  7838     		ldrb r0, [r7]
 
 #97			ST		SENSHUM_OK {R:9$34}
@@ -1039,19 +1039,19 @@ END_PROGRAM
 #98		$$LAB$5:
 #99			LD		$$VAR$3
 (*) UNDEF
-300005CC  F8DF 705C		ldr r7, [pc, #+92] ; 0x200003E0
+300005CC  F8DF 7068		ldr r7, [pc, #+104] ; 0x2000038C
 300005D0  7838     		ldrb r0, [r7]
 
 #100			ST		DATAREADY {R:9$41}
 (*) BOOL
-300005D2  F8DF 7044		ldr r7, [pc, #+68] ; 0x200003C3
+300005D2  F8DF 7040		ldr r7, [pc, #+64] ; 0x2000036D
 300005D6  7038     		strb r0, [r7]
 
 #101		 
 #102			(* Network 10 *)
 #103			LD		AZIONI.2 {R:10$0}
 (*) UNDEF
-300005D8  F8DF 7034		ldr r7, [pc, #+52] ; 0x200003BE
+300005D8  F8DF 702C		ldr r7, [pc, #+44] ; 0x20000368
 300005DC  8838     		ldrh r0, [r7]
 300005DE  F3C0 0080		ubfx r0, r0, #2, #1
 
@@ -1067,24 +1067,24 @@ END_PROGRAM
 300005F2  4770     		bx lr
 
 300005F4  00002710		; 0x00002710
-300005F8  200002EF		; 0x200002EF
-300005FC  200002F0		; 0x200002F0
-30000600  2000031C		; 0x2000031C
-30000604  20000320		; 0x20000320
-30000608  20000324		; 0x20000324
-3000060C  200003BD		; 0x200003BD
-30000610  200003BE		; 0x200003BE
-30000614  200003C0		; 0x200003C0
-30000618  200003C3		; 0x200003C3
-3000061C  200003C4		; 0x200003C4
-30000620  200003C8		; 0x200003C8
-30000624  200003CC		; 0x200003CC
-30000628  200003D0		; 0x200003D0
-3000062C  200003E0		; 0x200003E0
-30000630  20000416		; 0x20000416
-30000634  20000417		; 0x20000417
-30000638  20000428		; 0x20000428
-3000063C  2000042C		; 0x2000042C
+300005F8  20000316		; 0x20000316
+300005FC  20000334		; 0x20000334
+30000600  20000360		; 0x20000360
+30000604  20000364		; 0x20000364
+30000608  20000368		; 0x20000368
+3000060C  2000036A		; 0x2000036A
+30000610  2000036C		; 0x2000036C
+30000614  2000036D		; 0x2000036D
+30000618  2000036E		; 0x2000036E
+3000061C  2000036F		; 0x2000036F
+30000620  20000370		; 0x20000370
+30000624  20000374		; 0x20000374
+30000628  20000378		; 0x20000378
+3000062C  2000037C		; 0x2000037C
+30000630  20000384		; 0x20000384
+30000634  20000388		; 0x20000388
+30000638  2000038C		; 0x2000038C
+3000063C  2000038D		; 0x2000038D
 30000640  FFFFFFFF		; 0x2401E63D
 30000644  FFFFFFFF		; 0x2401F060
 30000648  FFFFFFFF		; 0x2401F062
@@ -1445,18 +1445,18 @@ END_PROGRAM
 #3			(* memory_return := sysMbMRtu_MemoryMapping( TO_DWORD(ADR(sysMbMRtuNetList[0])), 1, TO_DWORD(ADR($$mbm_msg_queue[0])), 1, 100); *)
 #4			ADR		$$mbm_msg_queue[0]	{LNXT:2|3|-1}
 (*) UDINT
-3000080A  F8DF 0184		ldr r0, [pc, #+388] ; 0x20000338
+3000080A  F8DF 017C		ldr r0, [pc, #+380] ; 0x200002AC
 
 #5			TO_DWORD	{LNXT:2|3|-1}
 (-) @BYTE
 #6			ST		$$TMP3	{LNXT:2|3|-1}
 (*) DWORD
-3000080E  F8DF 718C		ldr r7, [pc, #+396] ; 0x20000418
+3000080E  F8DF 717C		ldr r7, [pc, #+380] ; 0x200002EC
 30000812  6038     		str r0, [r7]
 
 #7			ADR		sysMbMRtuNetList[0]	{LNXT:2|3|-1}
 (*) DWORD
-30000814  F8DF 017C		ldr r0, [pc, #+380] ; 0x2000037C
+30000814  F8DF 0178		ldr r0, [pc, #+376] ; 0x200002F0
 
 #8			TO_DWORD	{LNXT:2|3|-1}
 (-) @DWORD
@@ -1465,7 +1465,7 @@ END_PROGRAM
 30000818  B082     		sub sp, sp, #8
 3000081A  2701     		mov r7, #1 ; 1
 3000081C  4639     		mov r1, r7
-3000081E  F8DF 717C		ldr r7, [pc, #+380] ; 0x20000418
+3000081E  F8DF 716C		ldr r7, [pc, #+364] ; 0x200002EC
 30000822  683A     		ldr r2, [r7]
 30000824  2701     		mov r7, #1 ; 1
 30000826  463B     		mov r3, r7
@@ -1478,7 +1478,7 @@ END_PROGRAM
 
 #10			ST		memory_return	{LNXT:2|3|-1}
 (*) BOOL
-3000083A  F8DF 7144		ldr r7, [pc, #+324] ; 0x200002AC
+3000083A  F8DF 7148		ldr r7, [pc, #+328] ; 0x200002A7
 3000083E  7038     		strb r0, [r7]
 
 #11		
@@ -1486,7 +1486,7 @@ END_PROGRAM
 #13			(* IF memory_return *)
 #14			LD		memory_return	{LNXT:3|-1|-1}
 (*) UNDEF
-30000840  F8DF 713C		ldr r7, [pc, #+316] ; 0x200002AC
+30000840  F8DF 7140		ldr r7, [pc, #+320] ; 0x200002A7
 30000844  7838     		ldrb r0, [r7]
 
 #15			NOT	{LNXT:3|-1|-1}
@@ -1535,7 +1535,7 @@ END_PROGRAM
 
 #29			ST		openChannel_return	{LNXT:7|8|-1}
 (*) USINT
-3000087E  F8DF 7104		ldr r7, [pc, #+260] ; 0x200002AD
+3000087E  F8DF 7100		ldr r7, [pc, #+256] ; 0x200002A6
 30000882  7038     		strb r0, [r7]
 
 #30		
@@ -1543,7 +1543,7 @@ END_PROGRAM
 #32			(* IF openChannel_return = 16#FF *)
 #33			LD		openChannel_return	{LNXT:8|-1|-1}
 (*) UNDEF
-30000884  F8DF 70FC		ldr r7, [pc, #+252] ; 0x200002AD
+30000884  F8DF 70F8		ldr r7, [pc, #+248] ; 0x200002A6
 30000888  7838     		ldrb r0, [r7]
 
 #34			EQ		16#FF	{LNXT:8|-1|-1}
@@ -1577,7 +1577,7 @@ END_PROGRAM
 #47			sysMbMRtu_SlaveAddToNetList2		1, 100, 1, 0	{LNXT:12|13|-1}
 (*) USINT
 3000089E  B082     		sub sp, sp, #8
-300008A0  F8DF 70E0		ldr r7, [pc, #+224] ; 0x200002AD
+300008A0  F8DF 70DC		ldr r7, [pc, #+220] ; 0x200002A6
 300008A4  7838     		ldrb r0, [r7]
 300008A6  2101     		mov r1, #1 ; 1
 300008A8  2764     		mov r7, #100 ; 100
@@ -1593,7 +1593,7 @@ END_PROGRAM
 
 #48			ST		slave_return	{LNXT:12|13|-1}
 (*) USINT
-300008C2  F8DF 70C8		ldr r7, [pc, #+200] ; 0x20000337
+300008C2  F8DF 70D0		ldr r7, [pc, #+208] ; 0x20000314
 300008C6  7038     		strb r0, [r7]
 
 #49		
@@ -1604,16 +1604,16 @@ END_PROGRAM
 
 #52			ST		$$TMP4	{LNXT:13|14|-1}
 (*) @UINT
-300008CC  F8DF 70D0		ldr r7, [pc, #+208] ; 0x2000041C
+300008CC  F8DF 70CC		ldr r7, [pc, #+204] ; 0x20000318
 300008D0  6038     		str r0, [r7]
 
 #53			ADR		dbAddrArr_0	{LNXT:13|14|-1}
 (*) @UINT
-300008D2  F8DF 00C4		ldr r0, [pc, #+196] ; 0x200003A4
+300008D2  F8DF 00CC		ldr r0, [pc, #+204] ; 0x2000031C
 
 #54			ST		$$TMP5	{LNXT:13|14|-1}
 (*) @DWORD
-300008D6  F8DF 70CC		ldr r7, [pc, #+204] ; 0x20000420
+300008D6  F8DF 70CC		ldr r7, [pc, #+204] ; 0x2000032C
 300008DA  6038     		str r0, [r7]
 
 #55			ADR		msg_reg_types_info_0	{LNXT:13|14|-1}
@@ -1622,7 +1622,7 @@ END_PROGRAM
 
 #56			ST		$$TMP6	{LNXT:13|14|-1}
 (*) @BYTE
-300008E0  F8DF 70C4		ldr r7, [pc, #+196] ; 0x20000424
+300008E0  F8DF 70C4		ldr r7, [pc, #+196] ; 0x20000330
 300008E4  6038     		str r0, [r7]
 
 #57			LDP0		openChannel_return	{LNXT:13|14|-1}
@@ -1630,7 +1630,7 @@ END_PROGRAM
 #58			sysMbMRtu_NewSlaveMessage3		1, 3, 1, 4, $$TMP4, $$TMP5, 0, 1000, NULL, $$TMP6	{LNXT:13|14|-1}
 (*) USINT
 300008E6  B088     		sub sp, sp, #32
-300008E8  F8DF 7098		ldr r7, [pc, #+152] ; 0x200002AD
+300008E8  F8DF 7094		ldr r7, [pc, #+148] ; 0x200002A6
 300008EC  7838     		ldrb r0, [r7]
 300008EE  2101     		mov r1, #1 ; 1
 300008F0  2703     		mov r7, #3 ; 3
@@ -1639,10 +1639,10 @@ END_PROGRAM
 300008F6  463B     		mov r3, r7
 300008F8  2704     		mov r7, #4 ; 4
 300008FA  F8CD 7000		str r7, [sp]
-300008FE  F8DF 70A0		ldr r7, [pc, #+160] ; 0x2000041C
+300008FE  F8DF 709C		ldr r7, [pc, #+156] ; 0x20000318
 30000902  683F     		ldr r7, [r7]
 30000904  F8CD 7004		str r7, [sp, #+4]
-30000908  F8DF 7098		ldr r7, [pc, #+152] ; 0x20000420
+30000908  F8DF 7098		ldr r7, [pc, #+152] ; 0x2000032C
 3000090C  683F     		ldr r7, [r7]
 3000090E  F8CD 7008		str r7, [sp, #+8]
 30000912  2700     		mov r7, #0 ; 0
@@ -1651,7 +1651,7 @@ END_PROGRAM
 3000091C  F8CD 7010		str r7, [sp, #+16]
 30000920  2700     		mov r7, #0 ; 0
 30000922  F8CD 7014		str r7, [sp, #+20]
-30000926  F8DF 7080		ldr r7, [pc, #+128] ; 0x20000424
+30000926  F8DF 7080		ldr r7, [pc, #+128] ; 0x20000330
 3000092A  683F     		ldr r7, [r7]
 3000092C  F8CD 7018		str r7, [sp, #+24]
 30000930  F8DF 4044		ldr r4, [pc, #+68] ; 0x8081945
@@ -1661,7 +1661,7 @@ END_PROGRAM
 
 #59			ST		slaveMsg_return	{LNXT:13|14|-1}
 (*) BOOL
-3000093C  F8DF 7048		ldr r7, [pc, #+72] ; 0x20000336
+3000093C  F8DF 7058		ldr r7, [pc, #+88] ; 0x20000315
 30000940  7038     		strb r0, [r7]
 
 #60		
@@ -1669,7 +1669,7 @@ END_PROGRAM
 #62			(* IF slaveMsg_return *)
 #63			LD		slaveMsg_return	{LNXT:14|-1|-1}
 (*) UNDEF
-30000942  F8DF 7044		ldr r7, [pc, #+68] ; 0x20000336
+30000942  F8DF 7054		ldr r7, [pc, #+84] ; 0x20000315
 30000946  7838     		ldrb r0, [r7]
 
 #64			JMPCN	$label2	{LNXT:14|15|2}
@@ -1693,7 +1693,7 @@ END_PROGRAM
 
 #71				ST		slaveMsg_return	{LNXT:15|2|-1}
 (*) BOOL
-3000095A  F8DF 702C		ldr r7, [pc, #+44] ; 0x20000336
+3000095A  F8DF 703C		ldr r7, [pc, #+60] ; 0x20000315
 3000095E  7038     		strb r0, [r7]
 
 30000960  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
@@ -1707,17 +1707,17 @@ END_PROGRAM
 30000974  FFFFFFFF		; 0x080815D1
 30000978  FFFFFFFF		; 0x08081945
 3000097C  FFFFFFFF		; 0x08081F7D
-30000980  200002AC		; 0x200002AC
-30000984  200002AD		; 0x200002AD
-30000988  20000336		; 0x20000336
-3000098C  20000337		; 0x20000337
-30000990  20000338		; 0x20000338
-30000994  2000037C		; 0x2000037C
-30000998  200003A4		; 0x200003A4
-3000099C  20000418		; 0x20000418
-300009A0  2000041C		; 0x2000041C
-300009A4  20000420		; 0x20000420
-300009A8  20000424		; 0x20000424
+30000980  200002A6		; 0x200002A6
+30000984  200002A7		; 0x200002A7
+30000988  200002AC		; 0x200002AC
+3000098C  200002EC		; 0x200002EC
+30000990  200002F0		; 0x200002F0
+30000994  20000314		; 0x20000314
+30000998  20000315		; 0x20000315
+3000099C  20000318		; 0x20000318
+300009A0  2000031C		; 0x2000031C
+300009A4  2000032C		; 0x2000032C
+300009A8  20000330		; 0x20000330
 300009AC  300000E0		; 0x300000E0
 300009B0  300000F8		; 0x300000F8
 
@@ -1797,7 +1797,7 @@ END_PROGRAM
 
 #6			ST		slaveparam_return	{LNXT:2|2|-1}
 (*) BOOL
-30000A1C  F8DF 7018		ldr r7, [pc, #+24] ; 0x200003BC
+30000A1C  F8DF 7018		ldr r7, [pc, #+24] ; 0x20000317
 30000A20  7038     		strb r0, [r7]
 
 30000A22  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
@@ -1808,7 +1808,7 @@ END_PROGRAM
 
 30000A30  00000191		; 0x00000191
 30000A34  FFFFFFFF		; 0x080815E5
-30000A38  200003BC		; 0x200003BC
+30000A38  20000317		; 0x20000317
 30000A3C  FFFFFFFF		; 0x2401F97D
 
 END_PROGRAM
@@ -1902,8 +1902,8 @@ End code area:            		0000000030000D70h
 Code size:                		00000D70h
 
 Start local data area:    		0000000020000298h
-End local data area:      		0000000020000430h
-Local data size:          		00000198h
+End local data area:      		000000002000038Eh
+Local data size:          		000000F6h
 
 Start retentive data area:		0000000038000800h
 End retentive data area:  		0000000038000800h
@@ -1916,7 +1916,7 @@ Bit data size:            		00000000h
 
 
 ********************************************
-CODE ID:                                57378A49
+CODE ID:                                2ED6D400
 DEBUG MEMO ID:                          300002EE
 FULL MEMO ID:                           0000FB23
 ********************************************

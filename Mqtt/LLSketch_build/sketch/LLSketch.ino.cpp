@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#line 1 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 1 "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 #include <AlPlc_Opta.h>
 
 /* opta_1.2.0
@@ -26,7 +26,7 @@ struct PLCSharedVarsOutput_t
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(936861442);
+AlPlc AxelPLC(517674768);
 
 #include <ArduinoJson.h>
 #include <ArduinoMqttClient.h>
@@ -44,17 +44,18 @@ unsigned int fsm = 0;
 unsigned int total_retry = 0;
 bool conncected = false;
 
-#line 45 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 45 "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 boolean reconnect();
-#line 70 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 71 "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 void setup();
-#line 88 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 89 "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 void loop();
-#line 128 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 129 "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 void send_mqtt();
-#line 45 "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
+#line 45 "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch\\LLSketch.ino"
 boolean reconnect()
 {
+    
   // Ensure clean disconnect
 
   Serial.println("Attempting MQTT connection...");

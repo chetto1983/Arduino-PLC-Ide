@@ -1,4 +1,4 @@
-C:\Users\Davide\Documents\GitHub\Arduino-PLC-Ide\Mqtt\LLSketch_build\libraries\Arduino_SerialUpdater\Flasher.cpp.o: \
+C:\Users\Davide\OneDrive\ -\ Sonepar\Documenti\GitHub\Arduino-PLC-Ide\Mqtt\LLSketch_build\libraries\Arduino_SerialUpdater\Flasher.cpp.o: \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\Flasher.cpp \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\Flasher.h \
  C:\Users\Davide\AppData\Local\T\A\internal\Arduino_SerialUpdater_0.0.1_7d9c8f6383ea4320\Arduino_SerialUpdater\src\BossaDevice.h \

@@ -10,47 +10,47 @@
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\\variants\\OPTA"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "AlPlc_Opta.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\AlPlc_Opta_1.2.0_6f942e4889808e7a\\AlPlc_Opta\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "ArduinoRS485.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\ArduinoRS485_1.0.5_a61cd3c6d72c41a3\\ArduinoRS485\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "PortentaEthernet.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\\libraries\\Ethernet\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "SocketHelpers.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\\libraries\\SocketWrapper\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "OptaBlue.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\Arduino_Opta_Blueprint_0.2.2_628e3ba029d0e5fe\\Arduino_Opta_Blueprint\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "Wire.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\arduino_mbed_opta_4.1.6_6bd5cf0253f43b1d\\libraries\\Wire"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "ArduinoJson.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\ArduinoJson_7.2.0_fecde13dd02bc891\\ArduinoJson\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "ArduinoMqttClient.h",
     "Includepath": "C:\\Users\\Davide\\AppData\\Local\\T\\A\\internal\\ArduinoMqttClient_0.1.8_b1e57bf359553881\\ArduinoMqttClient\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\Davide\\Documents\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
+    "Sourcefile": "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\GitHub\\Arduino-PLC-Ide\\Mqtt\\LLSketch_build\\sketch\\LLSketch.ino.cpp",
     "Include": "",
     "Includepath": null
   },

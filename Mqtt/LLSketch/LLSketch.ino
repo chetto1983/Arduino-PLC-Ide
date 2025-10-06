@@ -24,7 +24,7 @@ struct PLCSharedVarsOutput_t
 PLCSharedVarsOutput_t& PLCOut = (PLCSharedVarsOutput_t&)m_PLCSharedVarsOutputBuf;
 
 
-AlPlc AxelPLC(936861442);
+AlPlc AxelPLC(517674768);
 
 #include <ArduinoJson.h>
 #include <ArduinoMqttClient.h>
@@ -44,6 +44,7 @@ bool conncected = false;
 
 boolean reconnect()
 {
+    
   // Ensure clean disconnect
 
   Serial.println("Attempting MQTT connection...");

@@ -1,0 +1,1335 @@
+***********************************************************************
+*
+*	CODE GENERATION LISTING FOR: OptaMailSender
+*	COMPILER VERSION: 5.22.0.39
+*
+***********************************************************************
+
+**************************************************
+	CODE GENERATOR SUBROUTINES
+**************************************************
+
+$$MOD:
+3001E510  FB90 F3F1		sdiv r3, r0, r1
+3001E514  4359     		mul r1, r1, r3
+3001E516  EBC1 0000		rsb r0, r1, r0
+3001E51A  4770     		bx lr
+
+$$MOD_U:
+3001E51C  FBB0 F3F1		udiv r3, r0, r1
+3001E520  4359     		mul r1, r1, r3
+3001E522  EBC1 0000		rsb r0, r1, r0
+3001E526  4770     		bx lr
+
+**************************************************
+	List function block: TOF
+**************************************************
+
+FUNCTION_BLOCK TOF
+
+	{ DE:"<HTML>The TOF block produces a delayed de-activation of the output Q with respect of the input IN. The delay time is expressed in milliseconds on the PT input.</br></br>
+<img src= tofscheme.png>
+<ul>
+<li>if IN is TRUE then Q is TRUE</li>
+<li>Q becomes FALSE after PT milliseconds from IN becomes FALSE</li>
+<li>Q remains FALSE until IN remains FALSE</li>
+</ul>" }
+
+        VAR_INPUT
+IN : BOOL;	{ DE:"Timer input source" }
+PT : UDINT;	{ DE:"Preset time value (ms)" }
+	END_VAR
+
+        VAR_OUTPUT
+Q : BOOL;	{ DE:"Timer output" }
+ET : UDINT;	{ DE:"Timer current value (ms)" }
+	END_VAR
+
+        VAR_EXTERNAL
+	{G:"System_Timers"}
+sysTimer AT %MD60000.0 : UDINT;	{ DE:"System timer [ms]" }
+	END_VAR
+
+        VAR
+timStart : UDINT;	{ DE:"Time value at start of counting" }
+	END_VAR
+
+END_FUNCTION_BLOCK
+
+3001E528  E92D 4040		stmdb sp!, { r6, lr }
+3001E52C  462E     		mov r6, r5
+
+#0		{SRC:TOF}
+#1		
+#2			(*	Check if in counting	*)
+#3		
+#4			LD		IN
+(-) UNDEF
+3001E52E  7930     		ldrb r0, [r6, #4]
+
+#5			JMPC	lReset
+(-) BOOL
+3001E530  2800     		cmp r0, #0
+3001E532  D130     		bne #96 ; 0x3001E596
+
+
+#6		
+#7			(*	Check if falling edge of IN	*)
+#8			LD		Q
+(-) UNDEF
+3001E536  7B30     		ldrb r0, [r6, #12]
+
+#9			RETCN
+#10		
+(-) BOOL
+3001E538  2800     		cmp r0, #0
+3001E53A  D031     		beq #98 ; 0x3001E5A0
+
+
+#11			(*	Check if already in counting *)
+#12			LD		timStart
+(-) UNDEF
+3001E53E  6830     		ldr r0, [r6]
+
+#13			EQ		0
+(*) UDINT
+3001E540  2800     		cmp r0, #0
+3001E542  BF18 2000		nemov r0, #0
+3001E546  BF08 2001		eqmov r0, #1
+
+#14			JMPCN	lUpdate
+(-) BOOL
+3001E54A  2800     		cmp r0, #0
+3001E54C  D004     		beq #8 ; 0x3001E558
+
+
+#15			
+#16			(*	Start of counting *)
+#17			LD		sysTimer
+(*) UNDEF
+3001E550  F8DF 7054		ldr r7, [pc, #+84] ; 0x2401F268
+3001E554  6838     		ldr r0, [r7]
+
+#18			ST		timStart
+(-) UDINT
+3001E556  6030     		str r0, [r6]
+
+#19		
+#20		lUpdate:
+#21			
+#22			(*	Update timer and check if time elapsed *)
+#23			LD		sysTimer
+(*) UNDEF
+3001E558  F8DF 704C		ldr r7, [pc, #+76] ; 0x2401F268
+3001E55C  6838     		ldr r0, [r7]
+
+#24			SUB		timStart
+(*) UDINT
+3001E55E  6837     		ldr r7, [r6]
+3001E560  1BC0     		sub r0, r0, r7
+
+#25			ST		ET
+(-) UDINT
+3001E562  6130     		str r0, [r6, #16]
+
+#26			GE		PT
+(*) UDINT
+3001E564  68B7     		ldr r7, [r6, #8]
+3001E566  42B8     		cmp r0, r7
+3001E568  BF38 2000		lomov r0, #0
+3001E56C  BF28 2001		hsmov r0, #1
+
+#27			STN		Q
+(*) BOOL
+3001E570  B082     		sub sp, sp, #8
+3001E572  F8CD 0000		str r0, [sp]
+3001E576  2800     		cmp r0, #0
+3001E578  BF08 2001		eqmov r0, #1
+3001E57C  BF18 2000		nemov r0, #0
+3001E580  7330     		strb r0, [r6, #12]
+3001E582  F8DD 0000		ldr r0, [sp]
+3001E586  B002     		add sp, sp, #8
+
+#28			RETCN
+#29			
+(-) BOOL
+3001E588  2800     		cmp r0, #0
+3001E58A  D009     		beq #18 ; 0x3001E5A0
+
+
+#30			(*	Limit actual time value *)
+#31			LD		PT
+(-) UNDEF
+3001E58E  68B0     		ldr r0, [r6, #8]
+
+#32			ST		ET
+(-) UDINT
+3001E590  6130     		str r0, [r6, #16]
+
+#33			RET
+#34		
+(-) UDINT
+3001E592  E005     		b #10 ; 0x3001E5A0
+
+
+#35		lReset:
+#36		
+#37			(*	Reset status *)
+#38			LD		0
+(-) UNDEF
+3001E596  2000     		mov r0, #0 ; 0
+
+#39			ST		ET
+(-) USINT
+3001E598  6130     		str r0, [r6, #16]
+
+#40			ST		timStart
+(-) UDINT
+3001E59A  6030     		str r0, [r6]
+
+#41			LD		TRUE
+(-) UNDEF
+3001E59C  2001     		mov r0, #1 ; 1
+
+#42			ST		Q
+(-) BOOL
+3001E59E  7330     		strb r0, [r6, #12]
+
+3001E5A0  E8BD 4040		ldmia sp!, { r6, lr }
+
+3001E5A4  4770     		bx lr
+
+3001E5A8  FFFFFFFF		; 0x2401F268
+
+
+Frame allocation:
+
+	0000       : VAR timStart
+	0004 bit  0: VAR IN
+	0008       : VAR PT
+	000C bit  0: VAR Q
+	0010       : VAR ET
+
+END_FUNCTION_BLOCK
+**************************************************
+	List function block: TON
+**************************************************
+
+FUNCTION_BLOCK TON
+
+	{ DE:"<HTML>The TON block produces a delayed output Q of the input IN. The delay time is expressed in milliseconds on the PT input.</br></br>
+<img src= tonscheme.png>
+<ul>
+<li>if IN is FALSE Q is false</li>
+<li>Q becomes TRUE as IN remains TRUE for PT milliseconds</li>
+<li>Q remains TRUE until IN remains TRUE</li>
+</ul>" }
+
+        VAR_INPUT
+IN : BOOL;	{ DE:"Timer input source" }
+PT : UDINT;	{ DE:"Preset time value (ms)" }
+	END_VAR
+
+        VAR_OUTPUT
+Q : BOOL;	{ DE:"Timer output" }
+ET : UDINT;	{ DE:"Timer current value (ms)" }
+	END_VAR
+
+        VAR_EXTERNAL
+	{G:"System_Timers"}
+sysTimer AT %MD60000.0 : UDINT;	{ DE:"System timer [ms]" }
+	END_VAR
+
+        VAR
+timStart : UDINT;	{ DE:"Time value at start of counting" }
+	END_VAR
+
+END_FUNCTION_BLOCK
+
+3001E5AC  E92D 4040		stmdb sp!, { r6, lr }
+3001E5B0  462E     		mov r6, r5
+
+#0		{SRC:TON}
+#1		
+#2			(*	Check if in counting	*)
+#3		
+#4			LD		IN
+(-) UNDEF
+3001E5B2  7930     		ldrb r0, [r6, #4]
+
+#5			JMPCN	lReset
+(-) BOOL
+3001E5B4  2800     		cmp r0, #0
+3001E5B6  D025     		beq #74 ; 0x3001E604
+
+
+#6		
+#7			(*	Check if Q is TRUE *)
+#8			LD		Q
+(-) UNDEF
+3001E5BA  7B30     		ldrb r0, [r6, #12]
+
+#9			RETC
+#10			
+(-) BOOL
+3001E5BC  2800     		cmp r0, #0
+3001E5BE  D126     		bne #76 ; 0x3001E60E
+
+
+#11			(*	Check if already in counting *)
+#12			LD		timStart
+(-) UNDEF
+3001E5C2  6830     		ldr r0, [r6]
+
+#13			EQ		0
+(*) UDINT
+3001E5C4  2800     		cmp r0, #0
+3001E5C6  BF18 2000		nemov r0, #0
+3001E5CA  BF08 2001		eqmov r0, #1
+
+#14			JMPCN	lUpdate
+(-) BOOL
+3001E5CE  2800     		cmp r0, #0
+3001E5D0  D004     		beq #8 ; 0x3001E5DC
+
+
+#15		
+#16			(*	Start of counting *)
+#17			LD		sysTimer
+(*) UNDEF
+3001E5D4  F8DF 703C		ldr r7, [pc, #+60] ; 0x2401F268
+3001E5D8  6838     		ldr r0, [r7]
+
+#18			ST		timStart
+(-) UDINT
+3001E5DA  6030     		str r0, [r6]
+
+#19			
+#20		lUpdate:
+#21		
+#22			(*	Update timer and check if time elapsed *)
+#23			LD		sysTimer
+(*) UNDEF
+3001E5DC  F8DF 7034		ldr r7, [pc, #+52] ; 0x2401F268
+3001E5E0  6838     		ldr r0, [r7]
+
+#24			SUB		timStart
+(*) UDINT
+3001E5E2  6837     		ldr r7, [r6]
+3001E5E4  1BC0     		sub r0, r0, r7
+
+#25			ST		ET
+(-) UDINT
+3001E5E6  6130     		str r0, [r6, #16]
+
+#26			GE		PT
+(*) UDINT
+3001E5E8  68B7     		ldr r7, [r6, #8]
+3001E5EA  42B8     		cmp r0, r7
+3001E5EC  BF38 2000		lomov r0, #0
+3001E5F0  BF28 2001		hsmov r0, #1
+
+#27			ST		Q
+(-) BOOL
+3001E5F4  7330     		strb r0, [r6, #12]
+
+#28			RETCN
+#29		
+(-) BOOL
+3001E5F6  2800     		cmp r0, #0
+3001E5F8  D009     		beq #18 ; 0x3001E60E
+
+
+#30			(*	Limit actual time value *)
+#31			LD		PT
+(-) UNDEF
+3001E5FC  68B0     		ldr r0, [r6, #8]
+
+#32			ST		ET
+(-) UDINT
+3001E5FE  6130     		str r0, [r6, #16]
+
+#33			RET
+#34		
+(-) UDINT
+3001E600  E005     		b #10 ; 0x3001E60E
+
+
+#35		lReset:
+#36		
+#37			(*	Reset status *)
+#38			LD		0
+(-) UNDEF
+3001E604  2000     		mov r0, #0 ; 0
+
+#39			ST		ET
+(-) USINT
+3001E606  6130     		str r0, [r6, #16]
+
+#40			ST		timStart
+(-) UDINT
+3001E608  6030     		str r0, [r6]
+
+#41			LD		FALSE
+(-) UNDEF
+3001E60A  2000     		mov r0, #0 ; 0
+
+#42			ST		Q
+(-) BOOL
+3001E60C  7330     		strb r0, [r6, #12]
+
+3001E60E  E8BD 4040		ldmia sp!, { r6, lr }
+
+3001E612  4770     		bx lr
+
+3001E614  FFFFFFFF		; 0x2401F268
+
+
+Frame allocation:
+
+	0000       : VAR timStart
+	0004 bit  0: VAR IN
+	0008       : VAR PT
+	000C bit  0: VAR Q
+	0010       : VAR ET
+
+END_FUNCTION_BLOCK
+**************************************************
+	List function block: Clock_Gen
+**************************************************
+
+FUNCTION_BLOCK Clock_Gen
+
+        VAR_INPUT
+Tempo : UDINT;
+	END_VAR
+
+        VAR_OUTPUT
+Out : BOOL;
+	END_VAR
+
+        VAR
+Timer_1 : TON;
+Timer_2 : TOF;
+	END_VAR
+
+END_FUNCTION_BLOCK
+
+3001E618  E92D 4040		stmdb sp!, { r6, lr }
+3001E61C  462E     		mov r6, r5
+
+#0			{SRC:Clock_Gen}
+#1		 
+#2		  
+#3			(* Network 1 *)
+#4			LDN		TIMER_2.Q {R:1$0}
+(*) UNDEF
+3001E61E  F8DF 7060		ldr r7, [pc, #+96] ; 0x20
+3001E622  5DF0     		ldrb r0, [r6, +r7]
+3001E624  2800     		cmp r0, #0
+3001E626  BF08 2001		eqmov r0, #1
+3001E62A  BF18 2000		nemov r0, #0
+
+#5			ST		TIMER_1.IN {R:1$2}
+(-) BOOL
+3001E62E  7130     		strb r0, [r6, #4]
+
+#6			MOVE		TEMPO,TIMER_1.PT {R:1$2}
+(*) BOOL
+3001E630  6AF0     		ldr r0, [r6, #44]
+3001E632  60B0     		str r0, [r6, #8]
+
+#7			CAL		TIMER_1 {R:1$2}
+(*) UDINT
+3001E634  E92D 0021		stmdb sp!, { r0, r5 }
+3001E638  4635     		mov r5, r6
+3001E63A  467C     		mov r4, pc
+3001E63C  3C92     		sub r4, r4, #+0x92 ; 0x3001E5AC
+3001E63E  F044 0401		orr r4, r4, #1
+3001E642  47A0     		blx r4
+3001E644  E8BD 0021		ldmia sp!, { r0, r5 }
+
+#8			LD		TIMER_1.Q {R:1$2}
+(-) UNDEF
+3001E648  7B30     		ldrb r0, [r6, #12]
+
+#9		 
+#10			(* Network 2 *)
+#11			LD		TIMER_1.Q {R:2$0}
+(-) UNDEF
+3001E64A  7B30     		ldrb r0, [r6, #12]
+
+#12			ST		TIMER_2.IN {R:2$3}
+(-) BOOL
+3001E64C  7630     		strb r0, [r6, #24]
+
+#13			MOVE		TEMPO,TIMER_2.PT {R:2$3}
+(*) BOOL
+3001E64E  6AF0     		ldr r0, [r6, #44]
+3001E650  61F0     		str r0, [r6, #28]
+
+#14			CAL		TIMER_2 {R:2$3}
+(*) UDINT
+3001E652  E92D 0021		stmdb sp!, { r0, r5 }
+3001E656  F8DF 7024		ldr r7, [pc, #+36] ; 0x14
+3001E65A  19F5     		add r5, r6, r7
+3001E65C  F8DF 4028		ldr r4, [pc, #+40] ; 0x3001E528
+3001E660  F044 0401		orr r4, r4, #1
+3001E664  47A0     		blx r4
+3001E666  E8BD 0021		ldmia sp!, { r0, r5 }
+
+#15			LD		TIMER_2.Q {R:2$3}
+(*) UNDEF
+3001E66A  F8DF 7014		ldr r7, [pc, #+20] ; 0x20
+3001E66E  5DF0     		ldrb r0, [r6, +r7]
+
+#16			ST		OUT {R:2$5}
+(*) BOOL
+3001E670  F8DF 7010		ldr r7, [pc, #+16] ; 0x30
+3001E674  55F0     		strb r0, [r6, +r7]
+
+3001E676  E8BD 4040		ldmia sp!, { r6, lr }
+
+3001E67A  4770     		bx lr
+
+3001E67C  00000014		; 0x00000014
+3001E680  00000020		; 0x00000020
+3001E684  00000030		; 0x00000030
+3001E688  3001E528		; 0x3001E528
+
+
+Frame allocation:
+
+	0000       : FB Timer_1
+	0014       : FB Timer_2
+	0028 bit  0: VAR $$VAR$0
+	002C       : VAR Tempo
+	0030 bit  0: VAR Out
+
+END_FUNCTION_BLOCK
+**************************************************
+	List program: Main
+**************************************************
+
+PROGRAM Main
+
+        VAR
+SendMail : BOOL;
+Messaggio_Mail : WSTRING[ 32 ];
+Clk1Hz : Clock_Gen;
+t_SendOk : TOF;
+t_SendKo : TOF;
+	END_VAR
+
+END_PROGRAM
+
+3001E690  B082     		sub sp, sp, #8
+3001E692  F8CD E000		str lr, [sp]
+3001E696  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+#0			{SRC:Main}
+#1		 
+#2		 	(* P/N contacts management *)
+#3			LDN		B_USRBUTTON
+(*) UNDEF
+3001E69A  F8DF 72B8		ldr r7, [pc, #+696] ; 0x24020340
+3001E69E  7838     		ldrb r0, [r7]
+3001E6A0  2800     		cmp r0, #0
+3001E6A2  BF08 2001		eqmov r0, #1
+3001E6A6  BF18 2000		nemov r0, #0
+
+#4			AND		$$MEMNC$B_USRBUTTON
+(*) BOOL
+3001E6AA  F8DF 7254		ldr r7, [pc, #+596] ; 0x200002AC
+3001E6AE  783F     		ldrb r7, [r7]
+3001E6B0  4038     		and r0, r0, r7
+
+#5			ST		$$NC$B_USRBUTTON
+(*) BOOL
+3001E6B2  F8DF 7250		ldr r7, [pc, #+592] ; 0x200002AD
+3001E6B6  7038     		strb r0, [r7]
+
+#6			LD		B_USRBUTTON
+(*) UNDEF
+3001E6B8  F8DF 7298		ldr r7, [pc, #+664] ; 0x24020340
+3001E6BC  7838     		ldrb r0, [r7]
+
+#7			ST		$$MEMNC$B_USRBUTTON
+(*) BOOL
+3001E6BE  F8DF 7240		ldr r7, [pc, #+576] ; 0x200002AC
+3001E6C2  7038     		strb r0, [r7]
+
+#8			LDN		INGRESSO_1
+(*) UNDEF
+3001E6C4  F8DF 7240		ldr r7, [pc, #+576] ; 0x200002AE
+3001E6C8  7838     		ldrb r0, [r7]
+3001E6CA  2800     		cmp r0, #0
+3001E6CC  BF08 2001		eqmov r0, #1
+3001E6D0  BF18 2000		nemov r0, #0
+
+#9			AND		$$MEMNC$INGRESSO_1
+(*) BOOL
+3001E6D4  F8DF 7234		ldr r7, [pc, #+564] ; 0x200002AF
+3001E6D8  783F     		ldrb r7, [r7]
+3001E6DA  4038     		and r0, r0, r7
+
+#10			ST		$$NC$INGRESSO_1
+(*) BOOL
+3001E6DC  F8DF 7230		ldr r7, [pc, #+560] ; 0x200002B0
+3001E6E0  7038     		strb r0, [r7]
+
+#11			LD		INGRESSO_1
+(*) UNDEF
+3001E6E2  F8DF 7224		ldr r7, [pc, #+548] ; 0x200002AE
+3001E6E6  7838     		ldrb r0, [r7]
+
+#12			ST		$$MEMNC$INGRESSO_1
+(*) BOOL
+3001E6E8  F8DF 7220		ldr r7, [pc, #+544] ; 0x200002AF
+3001E6EC  7038     		strb r0, [r7]
+
+#13		 
+#14			(* Network 1 *)
+#15			MOVE		500,CLK1HZ.TEMPO {R:1$2}
+(*) BOOL
+3001E6EE  F44F 70FA		mov r0, #500 ; 500
+3001E6F2  F8DF 722C		ldr r7, [pc, #+556] ; 0x20000320
+3001E6F6  6038     		str r0, [r7]
+
+#16			CAL		CLK1HZ {R:1$2}
+(*) UDINT
+3001E6F8  E92D 0021		stmdb sp!, { r0, r5 }
+3001E6FC  F8DF 521C		ldr r5, [pc, #+540] ; 0x200002F4
+3001E700  467C     		mov r4, pc
+3001E702  3CEC     		sub r4, r4, #+0xEC ; 0x3001E618
+3001E704  F044 0401		orr r4, r4, #1
+3001E708  47A0     		blx r4
+3001E70A  E8BD 0021		ldmia sp!, { r0, r5 }
+
+#17			MOVE		CLK1HZ.OUT,LED_VERDE {R:1$2}
+(*) UDINT
+3001E70E  F8DF 7214		ldr r7, [pc, #+532] ; 0x20000324
+3001E712  7838     		ldrb r0, [r7]
+3001E714  F8DF 7238		ldr r7, [pc, #+568] ; 0x2402032D
+3001E718  7038     		strb r0, [r7]
+
+#18			LD		TRUE
+(-) UNDEF
+3001E71A  2001     		mov r0, #1 ; 1
+
+#19		 
+#20			(* Network 2 *)
+#21			LD		$$NC$B_USRBUTTON
+(*) UNDEF
+3001E71C  F8DF 71E4		ldr r7, [pc, #+484] ; 0x200002AD
+3001E720  7838     		ldrb r0, [r7]
+
+#22			ST		$$VAR$1
+(*) BOOL
+3001E722  F8DF 71D8		ldr r7, [pc, #+472] ; 0x200002A7
+3001E726  7038     		strb r0, [r7]
+
+#23			JMPCN	$$LAB$1
+(-) BOOL
+3001E728  2800     		cmp r0, #0
+3001E72A  D015     		beq #42 ; 0x3001E758
+
+
+#24			LD		"PULSANTE SCHIACCIATO" {R:2$5}
+(*) UNDEF
+3001E72E  F8DF 7228		ldr r7, [pc, #+552] ; 0x3001E4A4
+3001E732  4638     		mov r0, r7
+
+#25			ST		MESSAGGIO_MAIL {R:2$4}
+(*) WSTRING
+3001E734  B082     		sub sp, sp, #8
+3001E736  F8CD 0000		str r0, [sp]
+3001E73A  E92D 0006		stmdb sp!, { r1, r2 }
+3001E73E  2221     		mov r2, #33 ; 33
+3001E740  F8DF 11D4		ldr r1, [pc, #+468] ; 0x200002B2
+3001E744  F8DF 41AC		ldr r4, [pc, #+428] ; 0x80A142F
+3001E748  F044 0401		orr r4, r4, #1
+3001E74C  47A0     		blx r4
+3001E74E  E8BD 0006		ldmia sp!, { r1, r2 }
+3001E752  F8DD 0000		ldr r0, [sp]
+3001E756  B002     		add sp, sp, #8
+
+#26		$$LAB$1:
+#27			LD		$$VAR$1
+(*) UNDEF
+3001E758  F8DF 71A0		ldr r7, [pc, #+416] ; 0x200002A7
+3001E75C  7838     		ldrb r0, [r7]
+
+#28			S		SENDMAIL {R:2$1}
+(*) BOOL
+3001E75E  2800     		cmp r0, #0
+3001E760  D009     		beq #0x000012
+3001E762  B082     		sub sp, sp, #8
+3001E764  F8CD 0000		str r0, [sp]
+3001E768  2001     		mov r0, #1
+3001E76A  F8DF 71A8		ldr r7, [pc, #+424] ; 0x200002B1
+3001E76E  7038     		strb r0, [r7]
+3001E770  F8DD 0000		ldr r0, [sp]
+3001E774  B002     		add sp, sp, #8
+
+#29		 
+#30			(* Network 3 *)
+#31			LD		$$NC$INGRESSO_1
+(*) UNDEF
+3001E776  F8DF 7198		ldr r7, [pc, #+408] ; 0x200002B0
+3001E77A  7838     		ldrb r0, [r7]
+
+#32			ST		$$VAR$1
+(*) BOOL
+3001E77C  F8DF 717C		ldr r7, [pc, #+380] ; 0x200002A7
+3001E780  7038     		strb r0, [r7]
+
+#33			JMPCN	$$LAB$2
+(-) BOOL
+3001E782  2800     		cmp r0, #0
+3001E784  D015     		beq #42 ; 0x3001E7B2
+
+
+#34			LD		"INGRESSO 1 INTERROTTO" {R:3$5}
+(*) UNDEF
+3001E788  F8DF 71D0		ldr r7, [pc, #+464] ; 0x3001E4D0
+3001E78C  4638     		mov r0, r7
+
+#35			ST		MESSAGGIO_MAIL {R:3$4}
+(*) WSTRING
+3001E78E  B082     		sub sp, sp, #8
+3001E790  F8CD 0000		str r0, [sp]
+3001E794  E92D 0006		stmdb sp!, { r1, r2 }
+3001E798  2221     		mov r2, #33 ; 33
+3001E79A  F8DF 117C		ldr r1, [pc, #+380] ; 0x200002B2
+3001E79E  F8DF 4154		ldr r4, [pc, #+340] ; 0x80A142F
+3001E7A2  F044 0401		orr r4, r4, #1
+3001E7A6  47A0     		blx r4
+3001E7A8  E8BD 0006		ldmia sp!, { r1, r2 }
+3001E7AC  F8DD 0000		ldr r0, [sp]
+3001E7B0  B002     		add sp, sp, #8
+
+#36		$$LAB$2:
+#37			LD		$$VAR$1
+(*) UNDEF
+3001E7B2  F8DF 7148		ldr r7, [pc, #+328] ; 0x200002A7
+3001E7B6  7838     		ldrb r0, [r7]
+
+#38			S		SENDMAIL {R:3$1}
+(*) BOOL
+3001E7B8  2800     		cmp r0, #0
+3001E7BA  D009     		beq #0x000012
+3001E7BC  B082     		sub sp, sp, #8
+3001E7BE  F8CD 0000		str r0, [sp]
+3001E7C2  2001     		mov r0, #1
+3001E7C4  F8DF 714C		ldr r7, [pc, #+332] ; 0x200002B1
+3001E7C8  7038     		strb r0, [r7]
+3001E7CA  F8DD 0000		ldr r0, [sp]
+3001E7CE  B002     		add sp, sp, #8
+
+#39		 
+#40			(* Network 4 *)
+#41			LD		SENDMAIL {R:4$0}
+(*) UNDEF
+3001E7D0  F8DF 7140		ldr r7, [pc, #+320] ; 0x200002B1
+3001E7D4  7838     		ldrb r0, [r7]
+
+#42			OR		MANDAMAIL {R:4$6}
+(*) BOOL
+3001E7D6  F8DF 7194		ldr r7, [pc, #+404] ; 0x38000200
+3001E7DA  783F     		ldrb r7, [r7]
+3001E7DC  4338     		orr r0, r0, r7
+
+#43			ANDN		MAILOK {R:4$8}
+(*) BOOL
+3001E7DE  F8DF 7184		ldr r7, [pc, #+388] ; 0x38000000
+3001E7E2  783F     		ldrb r7, [r7]
+3001E7E4  2F00     		cmp r7, #0
+3001E7E6  BF08 2701		eqmov r7, #1
+3001E7EA  BF18 2700		nemov r7, #0
+3001E7EE  4038     		and r0, r0, r7
+
+#44			ANDN		MAILKO {R:4$10}
+(*) BOOL
+3001E7F0  F8DF 7174		ldr r7, [pc, #+372] ; 0x38000001
+3001E7F4  783F     		ldrb r7, [r7]
+3001E7F6  2F00     		cmp r7, #0
+3001E7F8  BF08 2701		eqmov r7, #1
+3001E7FC  BF18 2700		nemov r7, #0
+3001E800  4038     		and r0, r0, r7
+
+#45			ST		$$VAR$1
+(*) BOOL
+3001E802  F8DF 70F8		ldr r7, [pc, #+248] ; 0x200002A7
+3001E806  7038     		strb r0, [r7]
+
+#46			JMPCN	$$LAB$3
+(-) BOOL
+3001E808  2800     		cmp r0, #0
+3001E80A  D019     		beq #50 ; 0x3001E840
+
+
+#47			LDP0		MESSAGGIO_MAIL {R:4$14}
+(-) BOOL
+#48			TO_STRING	 {R:4$13}
+(*) WSTRING
+3001E80E  F8DF 0108		ldr r0, [pc, #+264] ; 0x200002B2
+3001E812  F8DF 40DC		ldr r4, [pc, #+220] ; 0x80A0901
+3001E816  F044 0401		orr r4, r4, #1
+3001E81A  47A0     		blx r4
+
+#49			ST		MESSAGGIO {R:4$15}
+(*) STRING
+3001E81C  B082     		sub sp, sp, #8
+3001E81E  F8CD 0000		str r0, [sp]
+3001E822  E92D 0006		stmdb sp!, { r1, r2 }
+3001E826  2220     		mov r2, #32 ; 32
+3001E828  F8DF 1144		ldr r1, [pc, #+324] ; 0x38000201
+3001E82C  F8DF 40C8		ldr r4, [pc, #+200] ; 0x80A18ED
+3001E830  F044 0401		orr r4, r4, #1
+3001E834  47A0     		blx r4
+3001E836  E8BD 0006		ldmia sp!, { r1, r2 }
+3001E83A  F8DD 0000		ldr r0, [sp]
+3001E83E  B002     		add sp, sp, #8
+
+#50		$$LAB$3:
+#51			LD		$$VAR$1
+(*) UNDEF
+3001E840  F8DF 70B8		ldr r7, [pc, #+184] ; 0x200002A7
+3001E844  7838     		ldrb r0, [r7]
+
+#52			ST		MANDAMAIL {R:4$1}
+(*) BOOL
+3001E846  F8DF 7124		ldr r7, [pc, #+292] ; 0x38000200
+3001E84A  7038     		strb r0, [r7]
+
+#53		 
+#54			(* Network 5 *)
+#55			LD		MAILOK {R:5$0}
+(*) UNDEF
+3001E84C  F8DF 7114		ldr r7, [pc, #+276] ; 0x38000000
+3001E850  7838     		ldrb r0, [r7]
+
+#56			ST		T_SENDOK.IN {R:5$2}
+(*) BOOL
+3001E852  F8DF 70D8		ldr r7, [pc, #+216] ; 0x2000032C
+3001E856  7038     		strb r0, [r7]
+
+#57			MOVE		1000,T_SENDOK.PT {R:5$2}
+(*) BOOL
+3001E858  F44F 707A		mov r0, #1000 ; 1000
+3001E85C  F8DF 70D0		ldr r7, [pc, #+208] ; 0x20000330
+3001E860  6038     		str r0, [r7]
+
+#58			CAL		T_SENDOK {R:5$2}
+(*) UDINT
+3001E862  E92D 0021		stmdb sp!, { r0, r5 }
+3001E866  F8DF 50C0		ldr r5, [pc, #+192] ; 0x20000328
+3001E86A  F8DF 40F4		ldr r4, [pc, #+244] ; 0x3001E528
+3001E86E  F044 0401		orr r4, r4, #1
+3001E872  47A0     		blx r4
+3001E874  E8BD 0021		ldmia sp!, { r0, r5 }
+
+#59			LD		T_SENDOK.Q {R:5$2}
+(*) UNDEF
+3001E878  F8DF 70B8		ldr r7, [pc, #+184] ; 0x20000334
+3001E87C  7838     		ldrb r0, [r7]
+
+#60			ST		LEDMSGOK {R:5$1}
+(*) BOOL
+3001E87E  F8DF 70C8		ldr r7, [pc, #+200] ; 0x24020328
+3001E882  7038     		strb r0, [r7]
+
+#61		 
+#62			(* Network 6 *)
+#63			LD		MAILKO {R:6$0}
+(*) UNDEF
+3001E884  F8DF 70E0		ldr r7, [pc, #+224] ; 0x38000001
+3001E888  7838     		ldrb r0, [r7]
+
+#64			ST		T_SENDKO.IN {R:6$2}
+(*) BOOL
+3001E88A  F8DF 70B0		ldr r7, [pc, #+176] ; 0x20000340
+3001E88E  7038     		strb r0, [r7]
+
+#65			MOVE		1000,T_SENDKO.PT {R:6$2}
+(*) BOOL
+3001E890  F44F 707A		mov r0, #1000 ; 1000
+3001E894  F8DF 70A8		ldr r7, [pc, #+168] ; 0x20000344
+3001E898  6038     		str r0, [r7]
+
+#66			CAL		T_SENDKO {R:6$2}
+(*) UDINT
+3001E89A  E92D 0021		stmdb sp!, { r0, r5 }
+3001E89E  F8DF 5098		ldr r5, [pc, #+152] ; 0x2000033C
+3001E8A2  F8DF 40BC		ldr r4, [pc, #+188] ; 0x3001E528
+3001E8A6  F044 0401		orr r4, r4, #1
+3001E8AA  47A0     		blx r4
+3001E8AC  E8BD 0021		ldmia sp!, { r0, r5 }
+
+#67			LD		T_SENDKO.Q {R:6$2}
+(*) UNDEF
+3001E8B0  F8DF 7090		ldr r7, [pc, #+144] ; 0x20000348
+3001E8B4  7838     		ldrb r0, [r7]
+
+#68			ST		LEDMSGKO {R:6$1}
+(*) BOOL
+3001E8B6  F8DF 7094		ldr r7, [pc, #+148] ; 0x24020329
+3001E8BA  7038     		strb r0, [r7]
+
+#69		 
+#70			(* Network 7 *)
+#71			LD		MAILOK {R:7$0}
+(*) UNDEF
+3001E8BC  F8DF 70A4		ldr r7, [pc, #+164] ; 0x38000000
+3001E8C0  7838     		ldrb r0, [r7]
+
+#72			OR		MAILKO {R:7$4}
+(*) BOOL
+3001E8C2  F8DF 70A4		ldr r7, [pc, #+164] ; 0x38000001
+3001E8C6  783F     		ldrb r7, [r7]
+3001E8C8  4338     		orr r0, r0, r7
+
+#73			R		SENDMAIL {R:7$1}
+(*) BOOL
+3001E8CA  2800     		cmp r0, #0
+3001E8CC  D009     		beq #0x000012
+3001E8CE  B082     		sub sp, sp, #8
+3001E8D0  F8CD 0000		str r0, [sp]
+3001E8D4  2000     		mov r0, #0
+3001E8D6  F8DF 703C		ldr r7, [pc, #+60] ; 0x200002B1
+3001E8DA  7038     		strb r0, [r7]
+3001E8DC  F8DD 0000		ldr r0, [sp]
+3001E8E0  B002     		add sp, sp, #8
+
+3001E8E2  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001E8E6  F8DD E000		ldr lr, [sp]
+3001E8EA  B002     		add sp, sp, #8
+
+3001E8EC  4770     		bx lr
+
+3001E8F0  FFFFFFFF		; 0x080A0901
+3001E8F4  FFFFFFFF		; 0x080A142F
+3001E8F8  FFFFFFFF		; 0x080A18ED
+3001E8FC  200002A7		; 0x200002A7
+3001E900  200002AC		; 0x200002AC
+3001E904  200002AD		; 0x200002AD
+3001E908  200002AE		; 0x200002AE
+3001E90C  200002AF		; 0x200002AF
+3001E910  200002B0		; 0x200002B0
+3001E914  200002B1		; 0x200002B1
+3001E918  200002B2		; 0x200002B2
+3001E91C  200002F4		; 0x200002F4
+3001E920  20000320		; 0x20000320
+3001E924  20000324		; 0x20000324
+3001E928  20000328		; 0x20000328
+3001E92C  2000032C		; 0x2000032C
+3001E930  20000330		; 0x20000330
+3001E934  20000334		; 0x20000334
+3001E938  2000033C		; 0x2000033C
+3001E93C  20000340		; 0x20000340
+3001E940  20000344		; 0x20000344
+3001E944  20000348		; 0x20000348
+3001E948  FFFFFFFF		; 0x24020328
+3001E94C  FFFFFFFF		; 0x24020329
+3001E950  FFFFFFFF		; 0x2402032D
+3001E954  FFFFFFFF		; 0x24020340
+3001E958  3001E4A4		; 0x3001E4A4
+3001E95C  3001E4D0		; 0x3001E4D0
+3001E960  3001E528		; 0x3001E528
+3001E964  FFFFFFFF		; 0x38000000
+3001E968  FFFFFFFF		; 0x38000001
+3001E96C  FFFFFFFF		; 0x38000200
+3001E970  FFFFFFFF		; 0x38000201
+
+END_PROGRAM
+
+
+**************************************************
+	Target variable image generation
+**************************************************
+
+
+*** INPUT:
+3001E974  4770     		bx lr
+
+
+*** OUTPUT:
+3001E976  4770     		bx lr
+
+
+
+**************************************************
+	Task Fast init code
+**************************************************
+
+3001E978  B082     		sub sp, sp, #8
+3001E97A  F8CD E000		str lr, [sp]
+3001E97E  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+3001E982  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001E986  F8DD E000		ldr lr, [sp]
+3001E98A  B002     		add sp, sp, #8
+
+3001E98C  4770     		bx lr
+
+**************************************************
+	List program: InitParDB
+**************************************************
+
+PROGRAM InitParDB
+
+        VAR
+warningsKiller : USINT;
+dummyCrc32 : UDINT;
+	END_VAR
+
+END_PROGRAM
+
+3001E9A0  B082     		sub sp, sp, #8
+3001E9A2  F8CD E000		str lr, [sp]
+3001E9A6  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+#0		{SRC:InitParDB}
+#1		(*$WAITSWITCH$*)
+#2		
+#3			(* dummyCrc32 := 0; *)
+#4			MOVE		0,dummyCrc32	{LNXT:3|5|-1}
+(*) UDINT
+3001E9AA  2000     		mov r0, #0 ; 0
+3001E9AC  F8DF 7058		ldr r7, [pc, #+88] ; 0x200002A8
+3001E9B0  6038     		str r0, [r7]
+
+#5		
+#6			(* warningsKiller := sysDBase_SetExtTable( TO_DWORD( 0 ), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ); *)
+#7			LDP0		0	{LNXT:5|3|-1}
+(-) UDINT
+#8			TO_DWORD	{LNXT:5|3|-1}
+(-) USINT
+3001E9B2  2000     		mov r0, #0 ; 0
+
+#9			sysDBase_SetExtTable		0, 0, 0, 0, 0, 0, 0, 0, 0, 0	{LNXT:5|3|-1}
+(*) DWORD
+3001E9B4  B088     		sub sp, sp, #32
+3001E9B6  2700     		mov r7, #0 ; 0
+3001E9B8  4639     		mov r1, r7
+3001E9BA  2700     		mov r7, #0 ; 0
+3001E9BC  463A     		mov r2, r7
+3001E9BE  2700     		mov r7, #0 ; 0
+3001E9C0  463B     		mov r3, r7
+3001E9C2  2700     		mov r7, #0 ; 0
+3001E9C4  F8CD 7000		str r7, [sp]
+3001E9C8  2700     		mov r7, #0 ; 0
+3001E9CA  F8CD 7004		str r7, [sp, #+4]
+3001E9CE  2700     		mov r7, #0 ; 0
+3001E9D0  F8CD 7008		str r7, [sp, #+8]
+3001E9D4  2700     		mov r7, #0 ; 0
+3001E9D6  F8CD 700C		str r7, [sp, #+12]
+3001E9DA  2700     		mov r7, #0 ; 0
+3001E9DC  F8CD 7010		str r7, [sp, #+16]
+3001E9E0  2700     		mov r7, #0 ; 0
+3001E9E2  F8CD 7014		str r7, [sp, #+20]
+3001E9E6  2700     		mov r7, #0 ; 0
+3001E9E8  F8CD 7018		str r7, [sp, #+24]
+3001E9EC  F8DF 4010		ldr r4, [pc, #+16] ; 0x809E481
+3001E9F0  F044 0401		orr r4, r4, #1
+3001E9F4  47A0     		blx r4
+3001E9F6  B008     		add sp, sp, #32
+
+#10			ST		warningsKiller	{LNXT:5|3|-1}
+(*) USINT
+3001E9F8  F8DF 7008		ldr r7, [pc, #+8] ; 0x200002A5
+3001E9FC  7038     		strb r0, [r7]
+
+3001E9FE  E005     		b #10
+
+3001EA00  FFFFFFFF		; 0x0809E481
+3001EA04  200002A5		; 0x200002A5
+3001EA08  200002A8		; 0x200002A8
+
+END_PROGRAM
+**************************************************
+	List program: $$IOConfig
+**************************************************
+
+PROGRAM $$IOConfig
+
+        VAR
+warningsKiller : BOOL;
+	END_VAR
+
+END_PROGRAM
+
+#0		{SRC:$$IOConfig}
+#1		(*$WAITSWITCH$*)
+#2		
+#3			(* warningsKiller := sysCfgAnalogRes(16); *)
+#4			LDP0		16	{LNXT:4|7|-1}
+(-) UDINT
+#5			sysCfgAnalogRes	{LNXT:4|7|-1}
+(*) USINT
+3001EA0C  2010     		mov r0, #16 ; 16
+3001EA0E  F8DF 40BC		ldr r4, [pc, #+188] ; 0x80A5199
+3001EA12  F044 0401		orr r4, r4, #1
+3001EA16  47A0     		blx r4
+
+#6			ST		warningsKiller	{LNXT:4|7|-1}
+(*) BOOL
+3001EA18  F8DF 70B8		ldr r7, [pc, #+184] ; 0x200002A4
+3001EA1C  7038     		strb r0, [r7]
+
+#7		
+#8			(* warningsKiller := sysCfgProgInput(0, 0); *)
+#9			LDP0		0	{LNXT:7|8|-1}
+(-) BOOL
+#10			sysCfgProgInput		0	{LNXT:7|8|-1}
+(*) USINT
+3001EA1E  2000     		mov r0, #0 ; 0
+3001EA20  2100     		mov r1, #0 ; 0
+3001EA22  F8DF 40AC		ldr r4, [pc, #+172] ; 0x80A51A5
+3001EA26  F044 0401		orr r4, r4, #1
+3001EA2A  47A0     		blx r4
+
+#11			ST		warningsKiller	{LNXT:7|8|-1}
+(*) BOOL
+3001EA2C  F8DF 70A4		ldr r7, [pc, #+164] ; 0x200002A4
+3001EA30  7038     		strb r0, [r7]
+
+#12		
+#13			(* warningsKiller := sysCfgProgInput(1, 0); *)
+#14			LDP0		1	{LNXT:8|9|-1}
+(-) BOOL
+#15			sysCfgProgInput		0	{LNXT:8|9|-1}
+(*) USINT
+3001EA32  2001     		mov r0, #1 ; 1
+3001EA34  2100     		mov r1, #0 ; 0
+3001EA36  F8DF 4098		ldr r4, [pc, #+152] ; 0x80A51A5
+3001EA3A  F044 0401		orr r4, r4, #1
+3001EA3E  47A0     		blx r4
+
+#16			ST		warningsKiller	{LNXT:8|9|-1}
+(*) BOOL
+3001EA40  F8DF 7090		ldr r7, [pc, #+144] ; 0x200002A4
+3001EA44  7038     		strb r0, [r7]
+
+#17		
+#18			(* warningsKiller := sysCfgProgInput(2, 0); *)
+#19			LDP0		2	{LNXT:9|10|-1}
+(-) BOOL
+#20			sysCfgProgInput		0	{LNXT:9|10|-1}
+(*) USINT
+3001EA46  2002     		mov r0, #2 ; 2
+3001EA48  2100     		mov r1, #0 ; 0
+3001EA4A  F8DF 4084		ldr r4, [pc, #+132] ; 0x80A51A5
+3001EA4E  F044 0401		orr r4, r4, #1
+3001EA52  47A0     		blx r4
+
+#21			ST		warningsKiller	{LNXT:9|10|-1}
+(*) BOOL
+3001EA54  F8DF 707C		ldr r7, [pc, #+124] ; 0x200002A4
+3001EA58  7038     		strb r0, [r7]
+
+#22		
+#23			(* warningsKiller := sysCfgProgInput(3, 0); *)
+#24			LDP0		3	{LNXT:10|11|-1}
+(-) BOOL
+#25			sysCfgProgInput		0	{LNXT:10|11|-1}
+(*) USINT
+3001EA5A  2003     		mov r0, #3 ; 3
+3001EA5C  2100     		mov r1, #0 ; 0
+3001EA5E  F8DF 4070		ldr r4, [pc, #+112] ; 0x80A51A5
+3001EA62  F044 0401		orr r4, r4, #1
+3001EA66  47A0     		blx r4
+
+#26			ST		warningsKiller	{LNXT:10|11|-1}
+(*) BOOL
+3001EA68  F8DF 7068		ldr r7, [pc, #+104] ; 0x200002A4
+3001EA6C  7038     		strb r0, [r7]
+
+#27		
+#28			(* warningsKiller := sysCfgProgInput(4, 0); *)
+#29			LDP0		4	{LNXT:11|12|-1}
+(-) BOOL
+#30			sysCfgProgInput		0	{LNXT:11|12|-1}
+(*) USINT
+3001EA6E  2004     		mov r0, #4 ; 4
+3001EA70  2100     		mov r1, #0 ; 0
+3001EA72  F8DF 405C		ldr r4, [pc, #+92] ; 0x80A51A5
+3001EA76  F044 0401		orr r4, r4, #1
+3001EA7A  47A0     		blx r4
+
+#31			ST		warningsKiller	{LNXT:11|12|-1}
+(*) BOOL
+3001EA7C  F8DF 7054		ldr r7, [pc, #+84] ; 0x200002A4
+3001EA80  7038     		strb r0, [r7]
+
+#32		
+#33			(* warningsKiller := sysCfgProgInput(5, 0); *)
+#34			LDP0		5	{LNXT:12|13|-1}
+(-) BOOL
+#35			sysCfgProgInput		0	{LNXT:12|13|-1}
+(*) USINT
+3001EA82  2005     		mov r0, #5 ; 5
+3001EA84  2100     		mov r1, #0 ; 0
+3001EA86  F8DF 4048		ldr r4, [pc, #+72] ; 0x80A51A5
+3001EA8A  F044 0401		orr r4, r4, #1
+3001EA8E  47A0     		blx r4
+
+#36			ST		warningsKiller	{LNXT:12|13|-1}
+(*) BOOL
+3001EA90  F8DF 7040		ldr r7, [pc, #+64] ; 0x200002A4
+3001EA94  7038     		strb r0, [r7]
+
+#37		
+#38			(* warningsKiller := sysCfgProgInput(6, 0); *)
+#39			LDP0		6	{LNXT:13|14|-1}
+(-) BOOL
+#40			sysCfgProgInput		0	{LNXT:13|14|-1}
+(*) USINT
+3001EA96  2006     		mov r0, #6 ; 6
+3001EA98  2100     		mov r1, #0 ; 0
+3001EA9A  F8DF 4034		ldr r4, [pc, #+52] ; 0x80A51A5
+3001EA9E  F044 0401		orr r4, r4, #1
+3001EAA2  47A0     		blx r4
+
+#41			ST		warningsKiller	{LNXT:13|14|-1}
+(*) BOOL
+3001EAA4  F8DF 702C		ldr r7, [pc, #+44] ; 0x200002A4
+3001EAA8  7038     		strb r0, [r7]
+
+#42		
+#43			(* warningsKiller := sysCfgProgInput(7, 0); *)
+#44			LDP0		7	{LNXT:14|4|-1}
+(-) BOOL
+#45			sysCfgProgInput		0	{LNXT:14|4|-1}
+(*) USINT
+3001EAAA  2007     		mov r0, #7 ; 7
+3001EAAC  2100     		mov r1, #0 ; 0
+3001EAAE  F8DF 4020		ldr r4, [pc, #+32] ; 0x80A51A5
+3001EAB2  F044 0401		orr r4, r4, #1
+3001EAB6  47A0     		blx r4
+
+#46			ST		warningsKiller	{LNXT:14|4|-1}
+(*) BOOL
+3001EAB8  F8DF 7018		ldr r7, [pc, #+24] ; 0x200002A4
+3001EABC  7038     		strb r0, [r7]
+
+3001EABE  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001EAC2  F8DD E000		ldr lr, [sp]
+3001EAC6  B002     		add sp, sp, #8
+
+3001EAC8  4770     		bx lr
+
+3001EACC  FFFFFFFF		; 0x080A5199
+3001EAD0  FFFFFFFF		; 0x080A51A5
+3001EAD4  200002A4		; 0x200002A4
+
+END_PROGRAM
+
+
+**************************************************
+	Target variable image generation
+**************************************************
+
+
+*** INPUT:
+3001EAD8  4770     		bx lr
+
+
+*** OUTPUT:
+3001EADA  4770     		bx lr
+
+
+
+**************************************************
+	Task Init init code
+**************************************************
+
+3001EADC  B082     		sub sp, sp, #8
+3001EADE  F8CD E000		str lr, [sp]
+3001EAE2  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+3001EAE6  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001EAEA  F8DD E000		ldr lr, [sp]
+3001EAEE  B002     		add sp, sp, #8
+
+3001EAF0  4770     		bx lr
+
+
+
+**************************************************
+	Global init code
+**************************************************
+
+3001EB00  B082     		sub sp, sp, #8
+3001EB02  F8CD E000		str lr, [sp]
+3001EB06  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+3001EB0A  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001EB0E  F8DD E000		ldr lr, [sp]
+3001EB12  B002     		add sp, sp, #8
+
+3001EB14  4770     		bx lr
+
+
+
+**************************************************
+	Global RETAIN init code
+**************************************************
+
+3001EB16  B082     		sub sp, sp, #8
+3001EB18  F8CD E000		str lr, [sp]
+3001EB1C  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+3001EB20  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001EB24  F8DD E000		ldr lr, [sp]
+3001EB28  B002     		add sp, sp, #8
+
+3001EB2A  4770     		bx lr
+
+
+
+**************************************************
+	Task $$VirtualTables init code
+**************************************************
+
+3001EB2C  B082     		sub sp, sp, #8
+3001EB2E  F8CD E000		str lr, [sp]
+3001EB32  E92D 0FF0		stmdb sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+
+3001EB36  E8BD 0FF0		ldmia sp!, { r4, r5, r6, r7, r8, r9, r10, r11 }
+3001EB3A  F8DD E000		ldr lr, [sp]
+3001EB3E  B002     		add sp, sp, #8
+
+3001EB40  4770     		bx lr
+
+
+
+********************************************
+MEMORY MAP
+********************************************
+
+Code area type:          		       main code
+Start code area:          		000000003001E400h
+End code area:            		000000003001ED2Ch
+Code size:                		0000092Ch
+
+Start local data area:    		0000000020000298h
+End local data area:      		0000000020000350h
+Local data size:          		000000B8h
+
+Start retentive data area:		0000000038000800h
+End retentive data area:  		0000000038000800h
+Retentive data size:      		00000000h
+
+Start bit data area:      		0000000000000000h
+End bit data area:        		0000000000000000h
+Bit data size:            		00000000h
+
+
+
+********************************************
+CODE ID:                                CCC60162
+DEBUG MEMO ID:                          3001E6EE
+FULL MEMO ID:                           0000BB5B
+********************************************
